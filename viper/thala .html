@@ -1,0 +1,162 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cards</title>
+
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Times New Roman", serif;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0px;
+        }
+
+        .con {
+            width: 1200px;
+            max-width: 100%;
+            margin: auto;
+            background-color: goldenrod;
+
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+        .card {
+            background-color: red;
+            width: 250px;
+            height: 300px;
+
+            border: 2px solid black;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        .img {
+            width: 100%;
+            height: 75%;
+            background-color: yellow;
+        }
+
+        .img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .content {
+            width: 100%;
+            height: 25%;
+
+            background-color: lightseagreen;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: bold;
+            text-align: center;
+            padding: 5px;
+        }
+
+
+        /* Tablet */
+        @media screen and (max-width: 1023px) {
+
+            .con {
+                width: 100%;
+            }
+
+            .card {
+                width: 220px;
+            }
+        }
+
+
+        /* Mobile */
+        @media screen and (max-width: 600px) {
+
+            h1 {
+                font-size: 28px;
+            }
+
+            .con {
+                width: 100%;
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .card {
+                width: 100%;
+                max-width: 300px;
+                height: 300px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1>JavaScript Cards</h1>
+
+    <div class="con" id="con"></div>
+
+
+    <script>
+
+        let arr = [
+            "https://static.wikia.nocookie.net/p__/images/8/83/MJMid2024.jpg/revision/latest/scale-to-width/360?cb=20260825041521&path-prefix=protagonist",
+
+            
+        ];
+
+
+        let final = '';
+
+
+        for (let i = 0; i < 8; ++i) {
+
+            let text = `
+                <div class="card">
+
+                    <div class="img">
+                        <img src="${arr[i % arr.length]}" alt="Spider">
+                    </div>
+
+                    <div class="content">
+                        Peter Parker and Mary Jane ${i + 1}
+                    </div>
+
+                </div>
+            `;
+
+            final += text;
+        }
+
+
+        document.getElementById("con").innerHTML = final;
+
+    </script>
+
+</body>
+
+</html>
+```
