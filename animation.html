@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Table Fan Animation</title>
+
+    <style>
+        body {
+            text-align: center;
+            background: #eee;
+            padding-top: 50px;
+        }
+
+        .fan {
+            width: 250px;
+            margin: auto;
+        }
+
+        .fan-head {
+            width: 180px;
+            height: 180px;
+            border: 8px solid #333;
+            border-radius: 50%;
+            margin: auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .blades {
+            width: 150px;
+            height: 150px;
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            animation: rotate 1s linear infinite;
+            animation-play-state: paused;
+        }
+
+        .blade {
+            width: 25px;
+            height: 70px;
+            background: #555;
+            position: absolute;
+            top: 5px;
+            left: 62px;
+            border-radius: 50%;
+            transform-origin: 12px 70px;
+        }
+
+        .blade:nth-child(1) {
+            transform: rotate(0deg);
+        }
+
+        .blade:nth-child(2) {
+            transform: rotate(90deg);
+        }
+
+        .blade:nth-child(3) {
+            transform: rotate(180deg);
+        }
+
+        .blade:nth-child(4) {
+            transform: rotate(270deg);
+        }
+
+        .center {
+            width: 30px;
+            height: 30px;
+            background: red;
+            border-radius: 50%;
+            position: absolute;
+            top: 75px;
+            left: 75px;
+            z-index: 2;
+        }
+
+        .stand {
+            width: 30px;
+            height: 100px;
+            background: #333;
+            margin: auto;
+        }
+
+        .base {
+            width: 130px;
+            height: 20px;
+            background: #333;
+            border-radius: 20px;
+            margin: auto;
+        }
+
+        button {
+            padding: 10px 25px;
+            margin: 15px 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        @keyframes rotate {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="fan">
+
+        <div class="fan-head">
+
+            <div class="blades" id="blades">
+
+                <div class="blade"></div>
+                <div class="blade"></div>
+                <div class="blade"></div>
+                <div class="blade"></div>
+
+            </div>
+
+            <div class="center"></div>
+
+        </div>
+
+        <div class="stand"></div>
+        <div class="base"></div>
+
+    </div>
+
+    <button onclick="fanOn()">ON</button>
+    <button onclick="fanOff()">OFF</button>
+
+
+    <script>
+
+        function fanOn() {
+
+            document.getElementById("blades")
+                .style.animationPlayState = "running";
+
+        }
+
+        function fanOff() {
+
+            document.getElementById("blades")
+                .style.animationPlayState = "paused";
+
+        }
+
+    </script>
+
+</body>
+</html>
