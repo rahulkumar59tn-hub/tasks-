@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTech - Learn Today</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5ff;
+            color: #102653;
+            padding: 30px 15px;
+        }
+
+
+        .main-box {
+            max-width: 1200px;
+            width: 90%;
+            margin: auto;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px #cdd8f5;
+        }
+
+        .content {
+            width: 60%;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #e0ebff;
+            color: #075de0;
+            padding: 8px 14px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        h1 {
+            font-size: 42px;
+            line-height: 1.15;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            font-size: 18px;
+            line-height: 1.6;
+            color: #34445f;
+            margin-bottom: 22px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 15px 22px;
+            border-radius: 9px;
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .primary {
+            background: #0866f5;
+            color: white;
+        }
+
+        .secondary {
+            border: 2px solid #0866f5;
+            color: #0866f5;
+            background: white;
+        }
+
+        .btn:hover {
+            opacity: 0.85;
+        }
+
+  
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .stat {
+            flex: 1;
+            text-align: center;
+            border-right: 1px solid #d5dce8;
+        }
+
+        .stat:last-child {
+            border-right: none;
+        }
+
+        .stat h2 {
+            color: #0866f5;
+            font-size: 27px;
+            margin-bottom: 5px;
+        }
+
+        .stat p {
+            color: #34445f;
+            font-size: 14px;
+        }
+
+        .image-area {
+            width: 40%;
+        }
+
+        .image-area img {
+            width: 100%;
+            height: 390px;
+            object-fit: cover;
+            border-radius: 12px;
+            display: block;
+        }
+
+        @media (min-width: 768px) and (max-width: 991px) {
+            body {
+                padding: 20px 0;
+            }
+
+            .main-box {
+                width: 90%;
+                flex-direction: column;
+                gap: 25px;
+                padding: 25px;
+            }
+
+            .content,
+            .image-area {
+                width: 100%;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            .description {
+                font-size: 17px;
+            }
+
+            .image-area img {
+                height: 220px;
+            }
+
+            .buttons {
+                margin-bottom: 25px;
+            }
+        }
+        @media (max-width: 767px) {
+            body {
+                padding: 15px 0;
+            }
+
+            .main-box {
+                width: 95%;
+                flex-direction: column;
+                gap: 22px;
+                padding: 18px;
+            }
+
+            .content,
+            .image-area {
+                width: 100%;
+            }
+
+            .tag {
+                font-size: 13px;
+                margin-bottom: 15px;
+            }
+
+            h1 {
+                font-size: 30px;
+                line-height: 1.15;
+            }
+
+            .description {
+                font-size: 15px;
+                line-height: 1.5;
+                margin-bottom: 18px;
+            }
+
+            .buttons {
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 25px;
+            }
+
+            .btn {
+                width: 100%;
+                padding: 13px 10px;
+                font-size: 15px;
+            }
+
+            .stats {
+                gap: 5px;
+                margin-bottom: 5px;
+            }
+
+            .stat h2 {
+                font-size: 21px;
+            }
+
+            .stat p {
+                font-size: 12px;
+            }
+
+            .image-area img {
+                height: 180px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-box">
+
+        <div class="content">
+
+            <span class="tag">Welcome to EduTech</span>
+
+            <h1>Learn Today<br>Build Tomorrow</h1>
+
+            <p class="description">
+                Join thousands of students and develop real-world
+                skills with expert-led courses.
+            </p>
+
+            <div class="buttons">
+                <a href="#courses" class="btn primary">
+                    Get Started &nbsp; →
+                </a>
+
+                <a href="#video" class="btn secondary">
+                    ▶ Watch Video
+                </a>
+            </div>
+
+            <div class="stats">
+
+                <div class="stat">
+                    <h2>10K+</h2>
+                    <p>Students</p>
+                </div>
+
+                <div class="stat">
+                    <h2>50+</h2>
+                    <p>Courses</p>
+                </div>
+
+                <div class="stat">
+                    <h2>95%</h2>
+                    <p>Success Rate</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="image-area">
+            <img
+                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=900&q=80"
+                alt="Online learning with laptop">
+        </div>
+
+    </div>
+
+</body>
+</html>
