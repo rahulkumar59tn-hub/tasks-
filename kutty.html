@@ -1,0 +1,454 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Analytics Report</title>
+</head>
+
+<body>
+
+    <h2>Employee Analytics Report</h2>
+    <pre id="output"></pre>
+
+    <script>
+
+    // 1. Employee Data
+
+    const employees = [
+        {id:101,name:"Arun",department:"IT",salary:75000,performance:92,experience:6,active:true,skills:["JavaScript","React"]},
+        {id:102,name:"Priya",department:"HR",salary:48000,performance:85,experience:4,active:true,skills:["Excel","Recruitment"]},
+        {id:103,name:"Karthik",department:"IT",salary:95000,performance:96,experience:8,active:true,skills:["Java","Spring","SQL"]},
+        {id:104,name:"Divya",department:"Finance",salary:65000,performance:78,experience:5,active:true,skills:["Excel","SQL"]},
+        {id:105,name:"Vijay",department:"IT",salary:55000,performance:55,experience:2,active:true,skills:["JavaScript","HTML"]},
+        {id:106,name:"Meena",department:"HR",salary:42000,performance:62,experience:3,active:false,skills:["Python","Excel"]},
+        {id:107,name:"Ravi",department:"Finance",salary:70000,performance:91,experience:7,active:true,skills:["Python","SQL"]},
+        {id:108,name:"Sneha",department:"IT",salary:85000,performance:88,experience:6,active:true,skills:["AWS","React"]}
+    ];
+
+    const originalData = JSON.stringify(employees);
+
+
+    // 2. Filter Active Employees
+    let activeEmployees = employees.filter(value => value.active === true);
+
+    // 3. Filter Inactive Employees
+    let inactiveEmployees = employees.filter(value => value.active === false);
+
+    // 4. Filter IT Department Employees
+    let itEmployees = employees.filter(value => value.department === "IT");
+
+    // 5. Filter Salary Above 70000
+    let highSalary = employees.filter(value => value.salary > 70000);
+
+    // 6. Filter Performance >= 90
+    let highPerformers = employees.filter(value => value.performance >= 90);
+
+    // 7. Sort Salary Descending
+    let salaryDescending = [...employees].sort((a, b) => b.salary - a.salary);
+
+    // 8. Top Three Highest-Paid Employees
+    let topThreeSalary = [...employees]
+        .sort((a, b) => b.salary - a.salary)
+        .slice(0, 3);
+
+    // 9. Sort Experience Ascending
+    let experienceAscending = [...employees]
+        .sort((a, b) => a.experience - b.experience);
+
+    // 10. Experienced Employees
+    let experiencedEmployees = employees.filter(value =>
+        value.active === true &&
+        value.experience >= 5 &&
+        value.performance > 85
+    );
+
+
+    // 11. Total Salary
+    let totalSalary = employees.reduce((total, value) => total + value.salary, 0);
+
+    // 12. Active Payroll
+    let activePayroll = activeEmployees.reduce((total, value) => total + value.salary, 0);
+
+    // 13. Average Salary
+    let averageSalary = totalSalary / employees.length;
+
+    // 14. IT Payroll
+    let itPayroll = itEmployees.reduce((total, value) => total + value.salary, 0);
+
+    // 15. Performance Count
+    let performanceCount = highPerformers.length;
+
+    // 16. Annual Active Payroll
+    let annualActivePayroll = activePayroll * 12;
+
+    // 17. Active Employees Bonus
+    let activeBonus = activeEmployees.map(value => ({
+        name: value.name,
+        salary: value.salary,
+        bonus: value.salary * 0.10
+    }));
+
+    // 18. Total Active Bonus
+    let totalActiveBonus = activeBonus.reduce((total, value) => total + value.bonus, 0);
+
+
+    // 19. Basic Employee Report
+    let basicReport = employees.map(value => ({
+        id: value.id,
+        name: value.name,
+        department: value.department,
+        salary: value.salary,
+        performance: value.performance
+    }));
+
+    // 20. Performance Status Report
+    let performanceReport = employees.map(value => ({
+        ...value,
+        performanceStatus:
+            value.performance >= 90 ? "Excellent" :
+            value.performance >= 75 ? "Good" :
+            value.performance >= 60 ? "Average" :
+            "Needs Improvement"
+    }));
+
+    // 21. Salary Bonus Report
+    let salaryBonusReport = employees.map(value => ({
+        name: value.name,
+        currentSalary: value.salary,
+        bonus: value.salary * 0.10,
+        finalSalary: value.salary * 1.10
+    }));
+
+    // 22. Uppercase Names
+    let uppercaseNames = employees.map(value => value.name.toUpperCase());
+
+    // 23. Active Employee Salary Report
+    let activeSalaryReport = employees
+        .filter(value => value.active === true)
+        .sort((a, b) => b.salary - a.salary)
+        .map(value => ({
+            name: value.name,
+            salary: value.salary
+        }));
+
+
+    // 24. Department Employee Count
+    let departmentCount = employees.reduce((result, value) => {
+        result[value.department] = (result[value.department] || 0) + 1;
+        return result;
+    }, {});
+
+    // 25. Department Payroll
+    let departmentPayroll = employees.reduce((result, value) => {
+        result[value.department] = (result[value.department] || 0) + value.salary;
+        return result;
+    }, {});
+
+    // 26. Department Performance Totals
+    let departmentPerformance = employees.reduce((result, value) => {
+        if (!result[value.department]) {
+            result[value.department] = {
+                totalPerformance: 0,
+                count: 0
+            };
+        }
+
+        result[value.department].totalPerformance += value.performance;
+        result[value.department].count++;
+
+        return result;
+    }, {});
+
+    // 27. Average Department Performance
+    let departmentReport = Object.keys(departmentPerformance).map(value => ({
+        department: value,
+        averagePerformance:
+            departmentPerformance[value].totalPerformance /
+            departmentPerformance[value].count
+    }));
+
+    // 28. Highest Payroll Department
+    let highestPayrollDepartment = Object.keys(departmentPayroll)
+        .map(value => ({
+            department: value,
+            payroll: departmentPayroll[value]
+        }))
+        .sort((a, b) => b.payroll - a.payroll)[0];
+
+    // 29. Departments with Low Performers
+    let departmentsWithLowPerformers = Object.keys(departmentCount).filter(value =>
+        employees.some(employee =>
+            employee.department === value &&
+            employee.performance < 60
+        )
+    );
+
+
+    // 30. All Skills
+    let allSkills = employees.reduce(
+        (result, value) => result.concat(value.skills),
+        []
+    );
+
+    // 31. Unique Skills
+    let uniqueSkills = [...new Set(allSkills)];
+
+    // 32. Check Python Skill
+    let hasPython = allSkills.includes("Python");
+
+    // 33. SQL Position
+    let sqlPosition = allSkills.indexOf("SQL");
+
+    // 34. Copy Employee Array
+    let copiedEmployees = [...employees];
+
+    // 35. Add New Employee
+    let newEmployee = {
+        id: 109,
+        name: "New Employee",
+        department: "IT",
+        salary: 40000,
+        performance: 70,
+        experience: 1,
+        active: true,
+        skills: ["HTML"]
+    };
+
+    copiedEmployees.push(newEmployee);
+
+    // 36. Employee Count After Adding
+    let addedEmployeeCount = copiedEmployees.length;
+
+    // 37. Remove Last Employee from Copy
+    let removedEmployee = copiedEmployees.pop();
+
+    // 38. Check Original Data Unchanged
+    let originalDataUnchanged = JSON.stringify(employees) === originalData;
+
+
+    // 39. Eligible Employees
+    let eligibleEmployees = employees
+        .filter(value => value.active === true && value.performance >= 80)
+        .sort((a, b) => b.salary - a.salary);
+
+    // 40. Bonus Eligibility Report
+    let eligibilityReport = eligibleEmployees.map(value => {
+        let bonusPercentage = value.performance >= 95 ? 15 : 10;
+        let bonusAmount = value.salary * bonusPercentage / 100;
+
+        return {
+            id: value.id,
+            name: value.name,
+            department: value.department,
+            salary: value.salary,
+            bonusPercentage: bonusPercentage + "%",
+            bonusAmount: bonusAmount,
+            finalSalary: value.salary + bonusAmount
+        };
+    });
+
+    // 41. Total Eligible Bonus
+    let totalEligibleBonus = eligibilityReport.reduce(
+        (total, value) => total + value.bonusAmount,
+        0
+    );
+
+    // 42. Highest Bonus Employee
+    let highestBonusEmployee = [...eligibilityReport]
+        .sort((a, b) => b.bonusAmount - a.bonusAmount)[0];
+
+    // 43. All Eligible Employees Active
+    let allEligibleEmployeesActive = eligibleEmployees.every(
+        value => value.active === true
+    );
+
+    // 44. Any Performance Below 60
+    let anyEmployeeBelowPerformance60 = employees.some(
+        value => value.performance < 60
+    );
+
+
+    // 45. Highest-Paid Employee
+    let highestPaidEmployee = [...employees]
+        .sort((a, b) => b.salary - a.salary)[0];
+
+    // 46. Lowest-Paid Employee
+    let lowestPaidEmployee = [...employees]
+        .sort((a, b) => a.salary - b.salary)[0];
+
+    // 47. Top Three Performers
+    let topThreePerformers = [...employees]
+        .sort((a, b) => b.performance - a.performance)
+        .slice(0, 3);
+
+    // 48. Employees Needing Improvement
+    let improvementEmployees = employees.filter(
+        value => value.performance < 70
+    );
+
+
+    // 49. Executive Report
+    let executiveReport = {
+        totalEmployees: employees.length,
+        activeEmployees: activeEmployees.length,
+        inactiveEmployees: inactiveEmployees.length,
+        totalSalary,
+        activeMonthlyPayroll: activePayroll,
+        annualActivePayroll,
+        averageSalary,
+        highestPaidEmployee,
+        lowestPaidEmployee,
+        topThreePerformers,
+        departmentPayroll,
+        totalEligibleBonus,
+        highestBonusEmployee,
+        improvementEmployees,
+        uniqueSkillsCount: uniqueSkills.length,
+        originalDataUnchanged
+    };
+
+
+    // 50. Combine All Reports
+    let reports = {
+        employees,
+        activeEmployees,
+        inactiveEmployees,
+        itEmployees,
+        highSalary,
+        highPerformers,
+        salaryDescending,
+        topThreeSalary,
+        experienceAscending,
+        experiencedEmployees,
+        totalSalary,
+        activePayroll,
+        averageSalary,
+        itPayroll,
+        performanceCount,
+        annualActivePayroll,
+        activeBonus,
+        totalActiveBonus,
+        basicReport,
+        performanceReport,
+        salaryBonusReport,
+        uppercaseNames,
+        activeSalaryReport,
+        departmentCount,
+        departmentPayroll,
+        departmentPerformance,
+        departmentReport,
+        highestPayrollDepartment,
+        departmentsWithLowPerformers,
+        allSkills,
+        uniqueSkills,
+        hasPython,
+        sqlPosition,
+        copiedEmployees,
+        newEmployee,
+        addedEmployeeCount,
+        removedEmployee,
+        originalDataUnchanged,
+        eligibleEmployees,
+        eligibilityReport,
+        totalEligibleBonus,
+        highestBonusEmployee,
+        allEligibleEmployeesActive,
+        anyEmployeeBelowPerformance60,
+        highestPaidEmployee,
+        lowestPaidEmployee,
+        topThreePerformers,
+        improvementEmployees,
+        executiveReport
+    };
+
+
+    // DISPLAY NUMBERED OUTPUT
+
+    const consoleReports = [
+        ["Employee Data", employees],
+        ["Active Employees", activeEmployees],
+        ["Inactive Employees", inactiveEmployees],
+        ["IT Department Employees", itEmployees],
+        ["High Salary Employees", highSalary],
+        ["High Performers", highPerformers],
+        ["Salary Descending", salaryDescending],
+        ["Top Three Highest-Paid Employees", topThreeSalary],
+        ["Experience Ascending", experienceAscending],
+        ["Experienced Employees", experiencedEmployees],
+        ["Total Salary", totalSalary],
+        ["Active Payroll", activePayroll],
+        ["Average Salary", averageSalary],
+        ["IT Payroll", itPayroll],
+        ["Performance Count", performanceCount],
+        ["Annual Active Payroll", annualActivePayroll],
+        ["Active Bonus", activeBonus],
+        ["Total Active Bonus", totalActiveBonus],
+        ["Basic Report", basicReport],
+        ["Performance Report", performanceReport],
+        ["Salary Bonus Report", salaryBonusReport],
+        ["Uppercase Names", uppercaseNames],
+        ["Active Salary Report", activeSalaryReport],
+        ["Department Count", departmentCount],
+        ["Department Payroll", departmentPayroll],
+        ["Department Performance", departmentPerformance],
+        ["Department Average Performance", departmentReport],
+        ["Highest Payroll Department", highestPayrollDepartment],
+        ["Departments with Low Performers", departmentsWithLowPerformers],
+        ["All Skills", allSkills],
+        ["Unique Skills", uniqueSkills],
+        ["Python Skill Exists", hasPython],
+        ["SQL Position", sqlPosition],
+        ["Copied Employees", [...employees]],
+        ["Added Employee", newEmployee],
+        ["Employee Count After Adding", addedEmployeeCount],
+        ["Removed Employee", removedEmployee],
+        ["Original Data Unchanged", originalDataUnchanged],
+        ["Eligible Employees", eligibleEmployees],
+        ["Bonus Eligibility Report", eligibilityReport],
+        ["Total Eligible Bonus", totalEligibleBonus],
+        ["Highest Bonus Employee", highestBonusEmployee],
+        ["All Eligible Employees Active", allEligibleEmployeesActive],
+        ["Any Employee Performance Below 60", anyEmployeeBelowPerformance60],
+        ["Highest-Paid Employee", highestPaidEmployee],
+        ["Lowest-Paid Employee", lowestPaidEmployee],
+        ["Top Three Performers", topThreePerformers],
+        ["Employees Needing Improvement", improvementEmployees],
+        ["Executive Report", executiveReport],
+        ["All Reports Combined", reports]
+    ];
+
+    // Display each report in Console and on the webpage
+    const output = document.getElementById("output");
+    let pageOutput = "";
+
+    consoleReports.forEach((report, index) => {
+        const number = index + 1;
+        const title = number + ". " + report[0];
+
+        console.log(title + ":", report[1]);
+
+        pageOutput += title + ":\n";
+        pageOutput += JSON.stringify(report[1], null, 4) + "\n\n";
+    });
+
+    // 51. JSON Report
+    console.log("51. Final JSON Report:");
+    console.log(JSON.stringify(reports, null, 4));
+
+    pageOutput += "51. Final JSON Report:\n";
+    pageOutput += JSON.stringify(reports, null, 4) + "\n\n";
+
+    // 52. Completed
+    console.log("52. Employee Analytics Report Completed");
+    pageOutput += "52. Employee Analytics Report Completed";
+
+    output.textContent = pageOutput;
+
+    </script>
+
+</body>
+</html>
+```
