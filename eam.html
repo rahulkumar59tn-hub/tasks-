@@ -1,0 +1,410 @@
+Java Full Stack Development — JavaScript Assessment
+Student Examination Paper
+Examination Details
+Intermediate + Advanced
+Duration
+90 minutes
+Total Questions
+50
+Total Marks
+100
+Question Types
+Mixed format
+Student Name: ___rahul.r_______________________
+Date: _____22-10-2026_____________ Batch: _____8_____________
+Instructions
+Answer all 50 questions.
+Section A contains 25 MCQs, 1 mark each.
+Section B contains 10 output-prediction questions, 2 marks each.
+Section C contains 5 debugging questions, 3 marks each.
+Section D contains 5 coding questions, 5 marks each.
+Section E contains 5 practical and application-based questions, 5 marks each.
+For coding questions, write valid JavaScript and show the expected output wherever applicable.
+Correction to the marks distribution: Section D carries 3 marks per question and Section E carries 5 marks per question. The total is therefore exactly 100 marks.
+Section A — Multiple Choice Questions
+25 questions × 1 mark = 25 marks 
+Choose the one correct answer for each question.
+1. What is the output of the following code?
+console.log(typeof NaN);
+A. "NaN" (b). "number" C. "undefined" D. "object"
+2. Which declaration allows reassignment but does not allow redeclaration in the same scope?
+A. var B. const {c}. let D. static
+3. What is the output?
+console.log("5" + 2);
+console.log("5" - 2);
+A. 7 and 3 (b)"52" and 3 C. "52" and "52" D. 7 and "3"
+4. Which expression checks both value and data type?
+A. a = b B. a == b {©.} a === b D. a != b
+5. What is the result of Boolean("false")?
+A. false (b) true C. undefined D. NaN
+6. Which operator returns a value based on a condition in a single expression?
+A. Spread operator (b) Ternary operator C. Assignment operator D. Type operator
+7. What is the output?
+let marks = 75;
+
+if (marks >= 90) {
+    console.log("A");
+} else if (marks >= 60) {
+    console.log("B");
+} else {
+    console.log("C");
+}
+A. A (b). B C. C D. No output
+8. Which loop is designed to iterate over the values of an iterable such as an array?
+A. for...in (b). for...of C. if...else D. switch
+9. What does "JavaScript".slice(-6) return?
+A. "Java" (b) "Script" C. "JavaS" D. "ipt"
+10. Which method converts a string into an array using a delimiter?
+A. join() B. concat() ©. split() D. splice()
+11. What is the output?
+const greet = (name) => `Hello, ${name}`;
+console.log(greet("Ragu"));
+A. Hello, name (b). Hello, Ragu C. undefined D. Hello, ${name}
+12. What does a return statement do inside a function?
+A. Prints a value automatically (b). Sends a value back to the caller and ends that function execution C. Repeats the function D. Declares a variable
+13. Which array method adds one or more elements to the end of an array and returns the new length?
+A. pop() B. shift() ©. push() D. unshift()
+14. Which array method creates a new array containing elements that satisfy a condition?
+(a). filter() B. forEach() C. reduce() D. find()
+15. What does map() normally return when called on an array?
+A. A single number (b). A new array containing callback results C. Only the first matching element D. A Boolean value
+16. Which array method is most suitable for calculating the total of all numeric elements?
+A. some() B. find() © reduce() D. every()
+17. What does find() return when no element matches its condition?
+A. An empty array B. false C. null (d). undefined
+18. What does every() return when all array elements satisfy a condition?
+A. The matching elements (b). true C. The first matching element D. A new array
+19. Which method checks whether at least one array element satisfies a condition?
+A. every() B. map() ©. some() D. forEach()
+20. Which statement about forEach() is correct?
+A. It creates a new array of callback results. (b). It returns the first matching element. C. It is primarily used to execute a callback for each element. D. It automatically sorts the array.
+21. What is the purpose of Object.entries(obj)?
+(a). Returns an array of the object's key-value pairs B. Returns only the object's values C. Deletes all object properties D. Converts the object into a JSON string
+22. Which syntax accesses the name property of an object stored in student?
+A. student->name (b). student.name C. student::name D. student#name
+23. Which method selects the first DOM element matching a CSS selector?
+A. document.getElementsByClassName() (b). document.querySelector() C. document.createElement() D. document.write()
+24. What is the purpose of event.preventDefault() in a form's submit event handler?
+A. It removes the form from the page. (b) It prevents the browser's default form submission behavior. C. It automatically validates every input. D. It removes all event listeners.
+25. Which event is generally appropriate for handling a form submission?
+A. mouseover B. keydown ©. submit D. mouseenter
+Section B — Output Prediction
+10 questions × 2 marks = 20 marks
+Write the exact output of each program.
+26.
+let x = 5;
+console.log(x++ + ++x);
+Output: ___12___________________________
+27.
+console.log(typeof null);
+console.log(typeof []);
+Output: object,object
+__________________________
+28.
+const text = "FullStack";
+console.log(text.substring(4, 9));
+Output: ______Stack________________________
+29.
+function calculate(a, b = 3) {
+    return a * b;
+}
+
+console.log(calculate(4));
+console.log(calculate(4, 5));
+Output: _______12,,20_______________________
+30.
+const nums = [2, 4, 6];
+const result = nums.map(n => n / 2);
+console.log(result);
+Output: ____[1,2,3]______________________
+31.
+const nums = [1, 2, 3, 4, 5];
+console.log(nums.filter(n => n % 2 === 0));
+Output: ________[2,4]______________________
+32.
+const nums = [10, 20, 30];
+const result = nums.reduce((total, n) => total + n, 0);
+console.log(result);
+Output: ____{60}__________________________
+33.
+const students = [
+    { name: "Arun", mark: 65 },
+    { name: "Bala", mark: 85 },
+    { name: "Cathy", mark: 45 }
+];
+
+console.log(students.find(s => s.mark >= 60).name);
+Output: __________Arun-65____________________
+34.
+const values = [3, 10, 2];
+values.sort();
+console.log(values);
+Output: ______[10,_2 , 3 ]_______________________
+35.
+const user = {
+    name: "Ravi",
+    age: 25
+};
+
+const { name, age } = user;
+console.log(`${name}-${age}`);
+Output: ______ravi-25________________________
+Section C — Debugging
+5 questions × 3 marks = 15 marks
+Identify the error and rewrite the code correctly.
+36. Incorrect comparison
+let age = 18;
+
+if (age = 18) {
+    console.log("Eligible");
+}
+let age = 18;
+
+if (age === 18) {
+    console.log("Eligible");
+}
+out
+       Eligible
+Task: Correct the condition so it checks whether age equals 18 without assigning a new value.
+37. Incorrect string method
+const message = "javascript";
+console.log(message.toUppercase());
+ 
+out 
+
+JAVASCRIPT
+
+Task: Correct the code to print JAVASCRIPT.
+38. Incorrect array filtering
+const numbers = [10, 15, 20, 25, 30];
+
+const result = numbers.filter(n => {
+    n > 20;
+});
+
+console.log(result);
+const numbers = [10, 15, 20, 25, 30];
+
+const result = numbers.filter(n => {
+    
+     return n > 20;
+});
+
+console.log(result);
+  
+
+out  
+ [25, 30]
+
+Task: Correct the callback so the result contains all numbers greater than 20.
+39. Incorrect object access
+const employee = {
+    name: "Kumar",
+    salary: 30000
+};
+
+console.log(employee.salary);
+
+out  
+30000
+
+Task: Print the employee's salary using the correct property access.
+40. Incorrect form handling
+const form = document.getElementById("studentForm");
+
+form.addEventListener("submit", function(event) {
+         event.preventDefault();    
+ 
+    const name = document.getElementById("studentName").value;
+    console.log(name);
+});
+Task: Update the event handler to prevent the browser's default form submission before processing the input.
+Section D — Coding Questions
+5 questions × 3 marks = 15 marks
+Write a JavaScript program for each task. Use appropriate variable names and correct syntax.
+41. Number Classification
+Write a function classifyNumber(num) that returns:
+"Positive" if the number is greater than zero.
+"Negative" if the number is less than zero.
+"Zero" if the number equals zero.
+function classifyNumber(num) {
+    if (num > 0) {
+        return "Positive";
+    } else if (num < 0) {
+        return "Negative";
+    } else {
+        return "Zero";
+    }
+}
+console.log(classifyNumber(10));
+console.log(classifyNumber(-5));
+console.log(classifyNumber(0));
+out 
+Positive
+Negative
+Zero
+42. String Processing
+Write a function countVowels(str) that returns the number of vowels (a, e, i, o, u) in a string, ignoring letter case.
+
+Example: countVowels("JavaScript") should return 3.
+43. Array Transformation
+Given an array of numbers, use map() to create a new array containing the square of each number.
+Example input: [2, 3, 4, 5]
+Expected output: [4, 9, 16, 25]
+const numbers = [2, 3, 4, 5];
+const result = numbers.map(n => n * n);
+console.log(result);
+out
+[4, 9, 16, 25]
+
+
+44. Filter and Sort
+Given an array of numbers, use filter() to retain only numbers greater than 10 and then sort them in ascending numeric order.
+Example input: [25, 5, 12, 40, 8, 15]
+Expected output: [12, 15, 25, 40]
+const numbers = [25, 5, 12, 40, 8, 15];
+const result = numbers
+    .filter(n => n > 10)
+    .sort((a, b) => a - b);
+console.log(result);
+out
+[12,15,25,40]
+
+
+
+45. Object Method
+Create an object named product with properties name, price, and quantity. Add a method named getTotal() that returns the total price based on the price per item multiplied by quantity.
+Example: If price is 250 and quantity is 4, the method should return 1000.
+const product = {
+    name: "Laptop",
+    price: 250,
+    quantity: 4,
+    getTotal: function() {
+        return this.price * this.quantity;
+    }
+};
+console.log(product.getTotal());
+out
+1000
+Section E — Practical and Application-Based Questions
+5 questions × 5 marks = 25 marks
+46. Student Marks Analyzer
+Create a function analyzeMarks(marks) that accepts an array of student marks and returns an object containing:
+total: sum of all marks.
+average: average mark.
+passed: number of students who scored at least 35.
+
+function analyzeMarks(marks) {
+    const total = marks.reduce((sum, mark) => sum + mark, 0);
+
+    const average = total / marks.length;
+
+    const passed = marks.filter(mark => mark >= 35).length;
+
+    return {
+        total: total,
+        average: average,
+        passed: passed
+    };
+}
+
+console.log(analyzeMarks([80, 30, 65, 90, 20]));
+out
+{
+    total: 285,
+    average: 57,
+    passed: 3
+}
+Use reduce() to calculate the total and filter() to count the students who passed.
+Example input:
+[80, 30, 65, 90, 20]
+Expected result:
+{
+    total: 285,
+    average: 57,
+    passed: 3
+}
+47. Employee Data Processing
+Given the following array:
+const employees = [
+    { name: "Arun", salary: 25000, department: "IT" },
+    { name: "Bala", salary: 40000, department: "HR" },
+    { name: "Cathy", salary: 50000, department: "IT" },
+    { name: "Divya", salary: 35000, department: "IT" }
+];
+Write JavaScript code to:
+Select only employees in the IT department.
+Extract their names using map().
+Calculate the total salary of all IT employees using reduce().
+Expected results:
+Names: ["Arun", "Cathy", "Divya"]
+Total IT salary: 110000
+const employees = [
+    { name: "Arun", salary: 25000, department: "IT" },
+    { name: "Bala", salary: 40000, department: "HR" },
+    { name: "Cathy", salary: 50000, department: "IT" },
+    { name: "Divya", salary: 35000, department: "IT" }
+];
+const itEmployees = employees.filter(emp => emp.department === "IT")
+const names = itEmployees.map(emp => emp.name);
+const totalSalary = itEmployees.reduce((sum, emp) => sum + emp.salary, 0);
+console.log("Names:", names);
+console.log("Total IT salary:", totalSalary);
+out
+Names: ['Arun','Cathy','Divya' ]
+Total IT salary: 110000
+48. Form Event Handling
+Create an HTML form with a name input and a submit button. Write JavaScript that:
+Selects the form using getElementById().
+Registers a submit event listener.
+Prevents the default form submission.
+Reads the name entered by the user.
+Displays a welcome message on the page.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Form</title>
+</head>
+<body>
+    <form id="studentForm">
+        <input type="text" id="studentName" placeholder="Enter your name" required>
+        <button type="submit">Submit</button>
+    </form>
+    <p id="message"></p>
+
+    <script>
+        const form = document.getElementById("studentForm");
+        form.addEventListener("submit", function(event) {
+            event.preventDefault();
+            const name = document.getElementById("studentName").value;
+            document.getElementById("message").textContent =
+                "Welcome, " + name + "!";
+        });
+    </script>
+</body>
+</html>
+out
+Welcome, Rahul!
+49. Array Methods — Logic Challenge
+Given:
+const numbers = [12, 5, 18, 7, 24, 9, 30];
+Write JavaScript code to:
+Use filter() to select numbers greater than 10.
+Use map() to multiply each selected number by 2.
+Use reduce() to calculate the sum of the transformed values.
+Use some() to check whether any original number is greater than 25.
+Use every() to check whether all original numbers are positive.
+50. Mini Project — Student Registration Form
+Build a simple student registration form using HTML and JavaScript with these fields:
+Student name
+Email
+Age
+Requirements:
+Handle submission using addEventListener("submit", ...).
+Use event.preventDefault() to prevent page reload.
+Validate that the name is not empty and age is at least 18.
+Create a student object containing the entered values.
+Display the registered student's details on the page using DOM manipulation.
+
