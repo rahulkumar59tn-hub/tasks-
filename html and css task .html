@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Payroll Dashboard</title>
+    <style>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+body {
+    background: #f4f5f7;
+    color: #333;
+    padding: 15px;
+}
+
+.dashboard {
+    max-width: 1250px;
+    margin: auto;
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 8px #ddd;
+}
+
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+.header h2 {
+    font-size: 18px;
+}
+
+.header-icons {
+    display: flex;
+    gap: 20px;
+    color: #555;
+}
+
+
+.content {
+    display: grid;
+    grid-template-columns: 1.2fr 0.9fr;
+    gap: 12px;
+    padding: 12px;
+}
+
+.left-section,
+.right-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.card {
+    background: white;
+    border: 1px solid #eee;
+    padding: 12px;
+    box-shadow: 0 2px 6px #e5e5e5;
+    min-width: 0;
+}
+
+.card h3 {
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+
+.filter {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.filter-card {
+    min-height: 95px;
+}
+
+.filter-card label {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+select {
+    width: 100%;
+    padding: 7px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background: white;
+    color: #555;
+}
+
+/* Gauge Cards */
+.gauges {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.gauge-card {
+    text-align: center;
+    min-height: 205px;
+}
+
+
+
+.gauge {
+    width: 120px;
+    height: 70px;
+    margin: 40px auto 10px;
+    border-radius: 120px 120px 0 0;
+    position: relative;
+    overflow: hidden;
+    background: #e2e2e2;
+}
+
+.gauge::before {
+    content: "";
+    position: absolute;
+    width: 84px;
+    height: 45px;
+    background: white;
+    border-radius: 84px 84px 0 0;
+    left: 18px;
+    bottom: 0;
+}
+
+.gauge-pink {
+    background: conic-gradient(
+        from 270deg,
+        #b00065 0deg 172.5deg,
+        #e2e2e2 172.5deg 180deg,
+        transparent 180deg
+    );
+}
+.gauge-purple {
+    background: conic-gradient(
+        from 270deg,
+        #50418c 0deg 168deg,
+        #e2e2e2 168deg 180deg,
+        transparent 180deg
+    );
+}
+
+.gauge-grey {
+    background: conic-gradient(
+        from 270deg,
+        #bd5363 0deg 6deg,
+        #e2e2e2 6deg 180deg,
+        transparent 180deg
+    );
+}
+
+.percentage {
+    font-size: 16px;
+    color: #666;
+}
+
+.scale {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+    color: #888;
+    margin-top: -3px;
+}
+ .designation-chart {
+    min-height: 300px;
+}  
+.designation-row {
+     display: grid;
+     grid: template columns 155px minmax(0,1fr);
+     align-items: center;
+     gap: 8px;
+     margin: 7px 0;
+     font-size: 10p;
+}
+    .designation-label {
+
+    white-space: nowrap;
+}
+.designation-bar {
+    height: 10px;
+    background: #50418c;
+}
+.designation-axis {
+    display: flex;
+    justify-content:space-between;
+    color: #777;
+    font-size: 10px;
+    border-top: 1px solid #eee;
+    margin-left: 163px;
+    padding-top: 5px;
+    gap: 4px;
+}
+.salary-chart {
+    min-height :320px; 
+}
+
+.legend {
+     display: flex;
+     justify-content: center;
+     flex-wrap:wrap ;
+     gap: 10px; 
+     font-size: 9px;
+    margin-bottom: 15px;
+
+}
+.legend span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.legend i {
+    display: inline-block;
+    width: 10px;
+    height: 8px;
+}
+.basic,
+.bar-basic {
+    background: #695d9a;
+}
+.allowance,
+.bar-allowance {
+    background: #92abc9;
+}
+.overtime,
+.bar-overtime {
+    background: #e9878c;
+}
+
+.reimbursement,
+.bar-reimbursement {
+    background: #b65b70;
+}
+.bar-row {
+   display: grid;
+   grid-template-columns:82px minmax(0,1fr) ;
+   align-items: center;
+   gap: 8px;
+    margin: 11px 0;
+    font-size: 10px;
+
+}
+.bar-label {
+    text-align: right;
+}
+.bar {
+    display: flex;
+    height: 14px;
+    background: #f5f5f5;
+    overflow: hidden;
+}
+.bar > div {
+    height: 100%;
+    min-width: 2px;
+}
+.bar-basic {
+    color: white;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+     white-space: nowrap;
+}
+.axis {
+    display: flex;
+    justify-content: space-between;
+    color: #777;
+    font-size: 10px;
+    border-top: 1px solid #eee;  margin-left: 90px;
+    padding-top: 5px;
+    gap: 4px;
+}
+.gender-card {
+    min-height: 290px;
+}
+.donut {
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+     background: conic-gradient(
+       #f28b91 0 50%,
+        #91aaca 50% 100%
+     );
+       margin: 35px auto 20px;
+    position: relative;
+}
+.donut-hole {
+    position: absolute;
+    width: 82px;
+    height: 82px;
+     border-radius: 50%;
+     background: white;
+      top: 50%;
+    left: 50%;
+     transform: translate(-50%, -50%);
+
+}
+.gender-legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 11px;
+}
+.gender-legend span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.pink-dot,
+.blue-dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.pink-dot {
+    background: #f28b91;
+}
+
+.blue-dot {
+    background: #91aaca;
+}
+
+
+    </style>
+
+</head>
+<body>
+    
+<div class="dashboard">
+
+    <header class="header">
+        <h2>HR Payroll Dashboard ⓘ</h2>
+
+        <div class="header-icons">
+            <span>⟳</span>
+            <span>⌕</span>
+            <span>⛶</span>
+            <span>•••</span>
+        </div>
+    </header>
+
+    <main class="content">
+
+        <!-- LEFT SECTION -->
+        <section class="left-section">
+
+            <!-- Filters -->
+            <div class="filter">
+
+                <div class="card filter-card">
+                    <label for="department">Select Department</label>
+                    <select id="department">
+                        <option>All</option>
+                        <option>IT</option>
+                        <option>Finance</option>
+                        <option>Marketing</option>
+                        <option>Human Resources</option>
+                        <option>Sales</option>
+                    </select>
+                </div>
+
+                <div class="card filter-card">
+                    <label for="employee">Select Employees</label>
+                    <select id="employee">
+                        <option>All</option>
+                        <option>Employee 101</option>
+                        <option>Employee 102</option>
+                        <option>Employee 103</option>
+                    </select>
+                </div>
+
+                <div class="card filter-card">
+                    <label for="month">Select Month</label>
+                    <select id="month">
+                        <option>All</option>
+                        <option>January</option>
+                        <option>February</option>
+                        <option>March</option>
+                        <option>April</option>
+                        <option>May</option>
+                        <option>June</option>
+                        <option>July</option>
+                        <option>August</option>
+                        <option>September</option>
+                        <option>October</option>
+                        <option>November</option>
+                        <option>December</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- KPI Gauges -->
+            <div class="gauges">
+
+                <div class="card gauge-card">
+                    <h3>Payroll Tax Compliance ⓘ</h3>
+                    <div class="gauge gauge-pink"></div>
+                    <div class="scale">
+                        <span>0</span>
+                        <span>100</span>
+                    </div>
+                    <p class="percentage">95.83 %</p>
+                </div>
+
+                <div class="card gauge-card">
+                    <h3>Payroll Accuracy ⓘ</h3>
+                    <div class="gauge gauge-purple"></div>
+                    <div class="scale">
+                        <span>0</span>
+                        <span>100</span>
+                    </div>
+                    <p class="percentage">96.67%</p>
+                </div>
+
+                <div class="card gauge-card">
+                    <h3>Payroll Error Rate ⓘ</h3>
+                    <div class="gauge gauge-grey"></div>
+                    <div class="scale">
+                        <span>0</span>
+                        <span>100</span>
+                    </div>
+                    <p class="percentage">3.33 %</p>
+                </div>
+
+            </div>
+
+            <!-- Payroll Cost by Designation -->
+            <div class="card designation-chart">
+
+                <h3>Payroll Cost per Employee by Designation</h3>
+
+                <div class="designation-row">
+                    <span class="designation-label">Team Lead</span>
+                    <div class="designation-bar" style="width:95%"></div>
+                </div>
+
+                <div class="designation-row">
+                    <span class="designation-label">Senior Consultant</span>
+                    <div class="designation-bar" style="width:92%"></div>
+                </div>
+
+                <div class="designation-row">
+                    <span class="designation-label">Product Manager</span>
+                    <div class="designation-bar" style="width:90%"></div>
+                </div>
+
+                <div class="designation-row">
+                    <span class="designation-label">Accountant</span>
+                    <div class="designation-bar" style="width:85%"></div>
+                </div>
+
+                <div class="designation-row">
+                    <span class="designation-label">Consultant</span>
+                    <div class="designation-bar" style="width:80%"></div>
+                </div>
+
+                <div class="designation-row">
+                    <span class="designation-label">Technical Lead</span>
+                    <div class="designation-bar" style="width:78%"></div>
+                </div>
+
+                <div class="designation-row">
+                    <span class="designation-label">Business Development Coordinator</span>
+                    <div class="designation-bar" style="width:72%"></div>
+                </div>
+
+                <div class="designation-row">
+                    <span class="designation-label">Software Engineer</span>
+                    <div class="designation-bar" style="width:70%"></div>
+                </div>
+
+                <div class="designation-row">
+                    <span class="designation-label">Account Manager</span>
+                    <div class="designation-bar" style="width:66%"></div>
+                </div>
+
+                <div class="designation-row">
+                    <span class="designation-label">Testing Engineer</span>
+                    <div class="designation-bar" style="width:62%"></div>
+                </div>
+
+                <div class="designation-row">
+                    <span class="designation-label">Human Resource Executive</span>
+                    <div class="designation-bar" style="width:59%"></div>
+                </div>
+
+                <div class="designation-row">
+                    <span class="designation-label">Receptionist</span>
+                    <div class="designation-bar" style="width:43%"></div>
+                </div>
+
+                <div class="designation-row">
+                    <span class="designation-label">Sales Engineer</span>
+                    <div class="designation-bar" style="width:41%"></div>
+                </div>
+
+                <div class="designation-axis">
+                    <span>$0</span>
+                    <span>$5K</span>
+                    <span>$10K</span>
+                    <span>$15K</span>
+                    <span>$20K</span>
+                    <span>$25K</span>
+                    <span>$30K</span>
+                    <span>$35K</span>
+                    <span>$40K</span>
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- RIGHT SECTION -->
+        <section class="right-section">
+
+            <!-- Gross Salary Breakdown -->
+            <div class="card salary-chart">
+
+                <h3>Gross Salary Breakdown by Department</h3>
+
+                <div class="legend">
+                    <span><i class="basic"></i>Basic Salary</span>
+                    <span><i class="allowance"></i>Allowance</span>
+                    <span><i class="overtime"></i>Overtime Pay</span>
+                    <span><i class="reimbursement"></i>Reimbursement</span>
+                </div>
+
+                <div class="bar-row">
+                    <span class="bar-label">Marketing</span>
+                    <div class="bar">
+                        <div class="bar-basic" style="width:91%">$434.53K</div>
+                        <div class="bar-allowance" style="width:6%"></div>
+                        <div class="bar-overtime" style="width:2%"></div>
+                        <div class="bar-reimbursement" style="width:1%"></div>
+                    </div>
+                </div>
+
+                <div class="bar-row">
+                    <span class="bar-label">Finance</span>
+                    <div class="bar">
+                        <div class="bar-basic" style="width:74%">$354.50K</div>
+                        <div class="bar-allowance" style="width:5%"></div>
+                        <div class="bar-overtime" style="width:2%"></div>
+                        <div class="bar-reimbursement" style="width:1%"></div>
+                    </div>
+                </div>
+
+                <div class="bar-row">
+                    <span class="bar-label">IT</span>
+                    <div class="bar">
+                        <div class="bar-basic" style="width:73%">$351K</div>
+                        <div class="bar-allowance" style="width:5%"></div>
+                        <div class="bar-overtime" style="width:2%"></div>
+                        <div class="bar-reimbursement" style="width:1%"></div>
+                    </div>
+                </div>
+
+                <div class="bar-row">
+                    <span class="bar-label">Accounting</span>
+                    <div class="bar">
+                        <div class="bar-basic" style="width:62%">$297.50K</div>
+                        <div class="bar-allowance" style="width:5%"></div>
+                        <div class="bar-overtime" style="width:2%"></div>
+                        <div class="bar-reimbursement" style="width:1%"></div>
+                    </div>
+                </div>
+
+                <div class="bar-row">
+                    <span class="bar-label">Customer Support</span>
+                    <div class="bar">
+                        <div class="bar-basic" style="width:52%">$250.50K</div>
+                        <div class="bar-allowance" style="width:5%"></div>
+                        <div class="bar-overtime" style="width:2%"></div>
+                        <div class="bar-reimbursement" style="width:1%"></div>
+                    </div>
+                </div>
+
+                <div class="bar-row">
+                    <span class="bar-label">Human Resources</span>
+                    <div class="bar">
+                        <div class="bar-basic" style="width:44%">$211.77K</div>
+                        <div class="bar-allowance" style="width:5%"></div>
+                        <div class="bar-overtime" style="width:2%"></div>
+                        <div class="bar-reimbursement" style="width:1%"></div>
+                    </div>
+                </div>
+
+                <div class="bar-row">
+                    <span class="bar-label">Sales</span>
+                    <div class="bar">
+                        <div class="bar-basic" style="width:34%">$164.77K</div>
+                        <div class="bar-allowance" style="width:5%"></div>
+                        <div class="bar-overtime" style="width:2%"></div>
+                        <div class="bar-reimbursement" style="width:1%"></div>
+                    </div>
+                </div>
+
+                <div class="bar-row">
+                    <span class="bar-label">Administration</span>
+                    <div class="bar">
+                        <div class="bar-basic" style="width:33%">$157K</div>
+                        <div class="bar-allowance" style="width:4%"></div>
+                        <div class="bar-overtime" style="width:2%"></div>
+                        <div class="bar-reimbursement" style="width:1%"></div>
+                    </div>
+                </div>
+
+                <div class="axis">
+                    <span>$0</span>
+                    <span>$100K</span>
+                    <span>$200K</span>
+                    <span>$300K</span>
+                    <span>$400K</span>
+                    <span>$500K</span>
+                    <span>$600K</span>
+                </div>
+
+            </div>
+
+            <!-- Employees by Gender -->
+            <div class="card gender-card">
+
+                <h3>Employees by Gender</h3>
+
+                <div class="donut">
+                    <div class="donut-hole"></div>
+                </div>
+
+                <div class="gender-legend">
+                    <span><i class="pink-dot"></i>Female</span>
+                    <span><i class="blue-dot"></i>Male</span>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+</div>
+
+</body>
+</html>
+
+    
