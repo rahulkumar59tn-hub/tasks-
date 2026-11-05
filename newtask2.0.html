@@ -1,1215 +1,874 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Management & Performance Analytics System (MGI-FE-PROJ-01)</title>
-  <style>
-    :root {
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --bg-light: #f8fafc;
-      --card-bg: #ffffff;
-      --text-dark: #0f172a;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --success: #10b981;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Student Management & Performance Analytics</title>
+<style>
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-    body { background: var(--bg-light); color: var(--text-dark); min-height: 100vh; }
+:root {
+  --nav: #1b2540; --nav2: #2d3a5a; --pri: #2563eb; --bg: #f4f6fa;
+  --txt: #1d2433; --mut: #667085; --bad: #c62828; --line: #e3e7f0; --gap: 16px;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; display: flex; min-height: 100vh;
+  font-family: system-ui, "Segoe UI", Arial, sans-serif;
+  background: var(--bg); color: var(--txt);
+}
 
-    .app-container { display: flex; min-height: 100vh; }
-    .sidebar { width: 250px; background: #1e293b; color: white; padding: 1rem; transition: transform 0.2s ease; }
-    .sidebar-header h2 { font-size: 1.25rem; margin-bottom: 2rem; color: #38bdf8; }
-    .nav-links { list-style: none; }
-    .nav-links li { margin-bottom: 0.5rem; }
-    .nav-btn { color: #94a3b8; text-decoration: none; display: block; padding: 0.75rem 1rem; border-radius: 6px; font-weight: 500; }
-    .nav-btn.active, .nav-btn:hover { background: #334155; color: white; }
+/* ---------- 2. Layout ---------- */
+aside { width: 260px; background: var(--nav); padding: 16px; flex-shrink: 0; }
+aside h2 { color: #29b6f6; margin: 4px 0 24px; font-size: 1.4rem; }
+#nav button {
+  display: block; width: 100%; text-align: left; background: none;
+  color: #a9b4cc; padding: 14px 16px; margin-bottom: 4px; font-size: 1rem; border-radius: 8px;
+}
+#nav button.on { background: var(--nav2); color: #fff; }
+main { flex: 1; padding: 24px; min-width: 0; }
+h2.t { font-size: 2rem; margin: 0 0 20px; }
 
-    .main-content { flex: 1; padding: 1.5rem; overflow-y: auto; }
-    .top-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
-    #toggle-sidebar { display: none; font-size: 1.5rem; background: none; border: none; cursor: pointer; }
+/* ---------- 3. Cards & grids ---------- */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--gap); margin-bottom: var(--gap); }
+.grid3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: var(--gap); margin-bottom: var(--gap); }
+.card { background: #fff; border: 1px solid var(--line); border-radius: 8px; padding: 18px; margin-bottom: var(--gap); }
+.cards .card, .grid3 .card { margin: 0; }
+.cards .card { text-align: center; padding: 26px 10px; }
+.card h3 { margin: 0 0 10px; font-size: 1.05rem; }
+.big { font-size: 1.9rem; font-weight: 700; color: var(--pri); }
 
-    .page-section { display: none; }
-    .page-section.active { display: block; }
+/* ---------- 4. Progress bars ---------- */
+.bl { margin: 8px 0; font-size: .85rem; }
+.bh { display: flex; justify-content: space-between; }
+.bt { background: #e3e7f0; height: 14px; border-radius: 7px; overflow: hidden; margin-top: 3px; }
+.bt i { display: block; height: 100%; background: var(--pri); }
 
-    .card { background: var(--card-bg); padding: 1.25rem; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 1rem; }
-    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1rem; }
-    .kpi-card { background: var(--card-bg); padding: 1rem; border-radius: 8px; border: 1px solid var(--border); text-align: center; }
-    .kpi-card p { font-size: 1.5rem; font-weight: bold; color: var(--primary); margin-top: 0.5rem; }
+/* ---------- 5. Tables ---------- */
+.tbl { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { padding: 9px; border-bottom: 1px solid var(--line); text-align: left; font-size: .9rem; }
+th[data-sort] { cursor: pointer; }
 
-    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
-    .grid-2col { display: grid; grid-template-columns: 1fr 2fr; gap: 1rem; }
+/* ---------- 6. Buttons & form controls ---------- */
+button { background: var(--pri); color: #fff; border: 0; padding: 8px 13px; border-radius: 6px; cursor: pointer; font: inherit; }
+button.sec { background: #8993a8; }
+button.del { background: var(--bad); }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: var(--gap); }
+input, select, textarea { padding: 8px; border: 1px solid #bcc3d4; border-radius: 6px; font: inherit; width: 100%; }
+.tools input, .tools select { width: auto; }
+label { display: block; margin-bottom: 8px; font-size: .9rem; }
+.err { color: var(--bad); display: block; min-height: 1em; }
+.row { display: flex; gap: 8px; margin-top: 8px; }
 
-    .table-container { overflow-x: auto; }
-    .data-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 0.9rem; }
-    .data-table th, .data-table td { border: 1px solid var(--border); padding: 0.6rem 0.8rem; text-align: left; }
-    .data-table th { background: #f1f5f9; }
+/* ---------- 7. Misc components ---------- */
+.tag { padding: 2px 8px; border-radius: 10px; font-size: .75rem; color: #fff; background: var(--bad); }
+.av {
+  display: inline-flex; width: 34px; height: 34px; border-radius: 50%; background: var(--pri);
+  color: #fff; align-items: center; justify-content: center; font-size: .8rem; object-fit: cover;
+}
+dialog { border: 0; border-radius: 10px; width: min(500px, 94vw); max-height: 90vh; }
+dialog::backdrop { background: #0006; }
+.empty { text-align: center; padding: 24px; color: var(--mut); }
+ul.rules li { margin-bottom: 6px; }
 
-    .btn { padding: 0.5rem 1rem; border: none; border-radius: 4px; cursor: pointer; font-weight: 500; }
-    .btn.primary { background: var(--primary); color: white; }
-    .btn.secondary { background: #e2e8f0; color: var(--text-dark); }
-    .btn.danger { background: var(--danger); color: white; }
-    .btn-sm { padding: 0.25rem 0.5rem; font-size: 0.8rem; }
-
-    .actions-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 1rem; flex-wrap: wrap; }
-    .search-filter-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-    input, select, textarea { padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.9rem; }
-    .form-group { margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.25rem; }
-    .form-inline { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
-
-    .avatar { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
-    .avatar-placeholder { width: 36px; height: 36px; border-radius: 50%; background: #cbd5e1; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-
-    .badge { padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.75rem; color: white; text-align: center; display: inline-block; }
-    .badge.green { background: var(--success); }
-    .badge.amber { background: var(--warning); }
-    .badge.red { background: var(--danger); }
-
-    .bar-container { background: #e2e8f0; height: 16px; border-radius: 8px; overflow: hidden; margin-top: 4px; }
-    .bar-fill { background: var(--primary); height: 100%; transition: width 0.3s; }
-
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000; }
-    .modal-content { background: white; padding: 1.5rem; border-radius: 8px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; position: relative; }
-    .close-modal { position: absolute; right: 1rem; top: 1rem; font-size: 1.5rem; cursor: pointer; }
-    .error-msg { color: var(--danger); font-size: 0.8rem; }
-    .alert { padding: 0.75rem; border-radius: 4px; margin-bottom: 1rem; font-size: 0.9rem; }
-    .alert.success { background: #d1fae5; color: #065f46; }
-    .alert.error { background: #fee2e2; color: #991b1b; }
-
-    .mb-1 { margin-bottom: 1rem; }
-    .mt-1 { margin-top: 1rem; }
-
-    @media print {
-      .sidebar, .top-header, .actions-bar, .btn, .no-print { display: none !important; }
-      .main-content { padding: 0 !important; margin: 0 !important; }
-      .card { border: none !important; box-shadow: none !important; page-break-inside: avoid; }
-      body { background: white !important; color: black !important; }
-      .data-table th, .data-table td { border: 1px solid #000 !important; }
-    }
-
-    @media (max-width: 768px) {
-      .app-container { flex-direction: column; }
-      .sidebar { width: 100%; transform: translateY(-100%); position: absolute; z-index: 10; display: none; }
-      .sidebar.show { transform: translateY(0); display: block; }
-      #toggle-sidebar { display: block; }
-      .grid-2col { grid-template-columns: 1fr; }
-    }
-  </style>
+/* ---------- 8. Responsive & print ---------- */
+@media (max-width: 800px) {
+  body { flex-direction: column; }
+  aside { width: auto; }
+  #nav { display: flex; flex-wrap: wrap; gap: 4px; }
+  #nav button { width: auto; padding: 8px 12px; margin: 0; }
+}
+@media print {
+  aside, .tools, button { display: none; }
+}
+</style>
 </head>
 <body>
-  <div class="app-container">
-    <!-- Sidebar Navigation -->
-    <nav class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <h2>MGI Analytics</h2>
-      </div>
-      <ul class="nav-links">
-        <li><a href="#" class="nav-btn active" data-page="dashboard">Dashboard</a></li>
-        <li><a href="#" class="nav-btn" data-page="students">Students</a></li>
-        <li><a href="#" class="nav-btn" data-page="attendance">Attendance</a></li>
-        <li><a href="#" class="nav-btn" data-page="tasks">Tasks</a></li>
-        <li><a href="#" class="nav-btn" data-page="activities">Activities</a></li>
-        <li><a href="#" class="nav-btn" data-page="analysis">Analysis & Rules</a></li>
-        <li><a href="#" class="nav-btn" data-page="reports">Reports & Export</a></li>
-        <li><a href="#" class="nav-btn" data-page="data">Data Management</a></li>
-      </ul>
-    </nav>
+<aside>
+  <h2>SM-Peter Parker</h2>
+  <nav id="nav"></nav>
+</aside>
+<main id="main"></main>
+<dialog id="dlg"></dialog>
 
-    <!-- Main Content Area -->
-    <main class="main-content">
-      <header class="top-header">
-        <button id="toggle-sidebar" class="btn-icon">☰</button>
-        <h1 id="page-title">Dashboard</h1>
-      </header>
+<script>
+/* =====================================================
+   1. CONFIG
+   ===================================================== */
+const CFG = {
+  KEY: 'mgi_student_system_v2',
+  COURSES: ['Web Development', 'Data Science', 'UI/UX Design', 'Cybersecurity'],
+  STATUS: ['Active', 'Inactive', 'Completed'],
+  ATT: ['Present', 'Absent', 'Leave'],
+  TASK: ['Pending', 'In Progress', 'Completed'],
+  ACT: ['Positive', 'Negative'],
+  VIEWS: [
+    ['dashboard', 'Dashboard'], ['students', 'Students'], ['attendance', 'Attendance'], ['tasks', 'Tasks'],
+    ['activities', 'Activities'], ['analysis', 'Analysis & Rules'], ['reports', 'Reports & Export'], ['data', 'Data Management']
+  ]
+};
 
-      <div id="alert-container"></div>
+/* =====================================================
+   2. STORAGE (only place that touches localStorage)
+   ===================================================== */
+const Store = {
+  data: { students: [], attendance: [], tasks: [], activities: [] },
 
-      <!-- Module A: Dashboard -->
-      <section id="page-dashboard" class="page-section active">
-        <div class="kpi-grid">
-          <div class="kpi-card"><h3>Total Students</h3><p id="kpi-total-students">0</p></div>
-          <div class="kpi-card"><h3>Active Students</h3><p id="kpi-active-students">0</p></div>
-          <div class="kpi-card"><h3>Today Attendance</h3><p id="kpi-today-att">0%</p></div>
-          <div class="kpi-card"><h3>Task Completion</h3><p id="kpi-task-rate">0%</p></div>
-          <div class="kpi-card"><h3>Net Points</h3><p id="kpi-net-points">0</p></div>
-        </div>
+  load() {
+    try {
+      const d = JSON.parse(localStorage.getItem(CFG.KEY));
+      if (d && Array.isArray(d.students)) this.data = { attendance: [], tasks: [], activities: [], ...d };
+    } catch (e) {
+      console.warn('Corrupted storage, starting fresh', e);
+    }
+  },
 
-        <div class="dashboard-grid">
-          <div class="card">
-            <h3>Today's Attendance Breakdown</h3>
-            <div id="attendance-breakdown" class="chart-container"></div>
-          </div>
-          <div class="card">
-            <h3>Course Distribution</h3>
-            <div id="course-distribution" class="chart-container"></div>
-          </div>
-          <div class="card">
-            <h3>Task Status Distribution</h3>
-            <div id="task-distribution" class="chart-container"></div>
-          </div>
-        </div>
-      </section>
+  save() {
+    try {
+      localStorage.setItem(CFG.KEY, JSON.stringify(this.data));
+      return true;
+    } catch (e) {
+      alert('Could not save data (storage full?): ' + e.message);
+      return false;
+    }
+  },
 
-      <!-- Module B & C: Students List -->
-      <section id="page-students" class="page-section">
-        <div class="actions-bar">
-          <div class="search-filter-group">
-            <input type="text" id="student-search" placeholder="Search by name or ID...">
-            <select id="filter-course"><option value="">All Courses</option></select>
-            <select id="filter-status">
-              <option value="">All Statuses</option>
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-              <option value="Completed">Completed</option>
-            </select>
-            <button id="btn-clear-filters" class="btn secondary">Clear</button>
-          </div>
-          <button id="btn-open-student-modal" class="btn primary">+ Add Student</button>
-        </div>
+  uid: () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
 
-        <div class="table-container">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Photo</th>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Course</th>
-                <th>Batch</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="students-table-body"></tbody>
-          </table>
-        </div>
-      </section>
+  addAttendance(r) { // one record per student per date, enforced here
+    if (this.data.attendance.some(a => a.sid === r.sid && a.date === r.date)) return false;
+    this.data.attendance.push({ id: this.uid(), ...r });
+    return true;
+  },
 
-      <!-- Module D: Attendance -->
-      <section id="page-attendance" class="page-section">
-        <div class="card">
-          <h3>Daily Attendance Sheet</h3>
-          <div class="form-inline mb-1">
-            <label for="att-date">Select Date: </label>
-            <input type="date" id="att-date">
-            <button id="btn-mark-all-present" class="btn secondary">Mark All Present</button>
-            <button id="btn-save-attendance" class="btn primary">Save Attendance</button>
-          </div>
-          <div class="table-container">
-            <table class="data-table">
-              <thead>
-                <tr>
-                  <th>Student ID</th>
-                  <th>Name</th>
-                  <th>Status</th>
-                  <th>Remarks</th>
-                </tr>
-              </thead>
-              <tbody id="attendance-sheet-body"></tbody>
-            </table>
-          </div>
-        </div>
-      </section>
+  related(sid) {
+    const d = this.data;
+    return {
+      att: d.attendance.filter(a => a.sid === sid).length,
+      tasks: d.tasks.filter(t => t.sid === sid).length,
+      acts: d.activities.filter(a => a.sid === sid).length
+    };
+  },
 
-      <!-- Module E: Tasks -->
-      <section id="page-tasks" class="page-section">
-        <div class="grid-2col">
-          <div class="card">
-            <h3>Create Task</h3>
-            <form id="form-task">
-              <div class="form-group">
-                <label for="task-student">Student (required)</label>
-                <select id="task-student" required></select>
-              </div>
-              <div class="form-group">
-                <label for="task-title">Title (3-100 chars)</label>
-                <input type="text" id="task-title" required minlength="3" maxlength="100">
-              </div>
-              <div class="form-group">
-                <label for="task-desc">Description</label>
-                <textarea id="task-desc" maxlength="500"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="task-due">Due Date</label>
-                <input type="date" id="task-due" required>
-              </div>
-              <button type="submit" class="btn primary">Assign Task</button>
-            </form>
-          </div>
+  removeStudent(sid) {
+    const d = this.data;
+    d.students = d.students.filter(s => s.id !== sid);
+    ['attendance', 'tasks', 'activities'].forEach(k => d[k] = d[k].filter(x => x.sid !== sid));
+  }
+};
 
-          <div class="card">
-            <h3>Tasks List</h3>
-            <div class="table-container">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Student</th>
-                    <th>Title</th>
-                    <th>Due Date</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody id="tasks-table-body"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
+/* =====================================================
+   3. CALCULATIONS (no DOM)
+   ===================================================== */
+const Calc = {
+  today() {
+    const d = new Date(), p = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`;
+  },
 
-      <!-- Module F: Activities -->
-      <section id="page-activities" class="page-section">
-        <div class="grid-2col">
-          <div class="card">
-            <h3>Record Activity</h3>
-            <form id="form-activity">
-              <div class="form-group">
-                <label for="act-student">Student</label>
-                <select id="act-student" required></select>
-              </div>
-              <div class="form-group">
-                <label for="act-type">Type</label>
-                <select id="act-type">
-                  <option value="Positive">Positive (+)</option>
-                  <option value="Negative">Negative (-)</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="act-category">Category</label>
-                <select id="act-category"></select>
-              </div>
-              <div class="form-group">
-                <label for="act-points">Points (1 - 100)</label>
-                <input type="number" id="act-points" min="1" max="100" required>
-              </div>
-              <div class="form-group">
-                <label for="act-desc">Description</label>
-                <input type="text" id="act-desc" required minlength="5" maxlength="300">
-              </div>
-              <button type="submit" class="btn primary">Save Activity</button>
-            </form>
-          </div>
+  pct: recs => recs.length
+    ? Math.round(recs.filter(r => r.status === 'Present').length / recs.length * 1000) / 10
+    : null,
 
-          <div class="card">
-            <h3>Activity History</h3>
-            <div class="table-container">
-              <table class="data-table">
-                <thead>
-                  <tr>
-                    <th>Student</th>
-                    <th>Type</th>
-                    <th>Category</th>
-                    <th>Points</th>
-                    <th>Description</th>
-                  </tr>
-                </thead>
-                <tbody id="activities-table-body"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
+  overdue: t => t.status !== 'Completed' && t.due < Calc.today(),
 
-      <!-- Module G: Performance Analysis -->
-      <section id="page-analysis" class="page-section">
-        <div class="card mb-1">
-          <h3>Individual Student Indicator Matrix</h3>
-          <div class="form-inline mb-1">
-            <label for="analysis-student-select">Select Student: </label>
-            <select id="analysis-student-select"></select>
-          </div>
-          <div id="analysis-results"></div>
-        </div>
+  points(acts) {
+    const sum = ty => acts.filter(a => a.type === ty).reduce((s, a) => s + a.points, 0);
+    return { pos: sum('Positive'), neg: sum('Negative'), net: sum('Positive') - sum('Negative') };
+  },
 
-        <div class="card">
-          <h3>Rating Rules Explanation</h3>
-          <table class="data-table">
-            <thead>
-              <tr><th>Indicator</th><th>Green</th><th>Amber</th><th>Red</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Attendance %</td><td>≥ 90.0%</td><td>75.0% - 89.9%</td><td>&lt; 75.0%</td></tr>
-              <tr><td>Task Completion %</td><td>≥ 80.0%</td><td>50.0% - 79.9%</td><td>&lt; 50.0%</td></tr>
-              <tr><td>Overdue Tasks</td><td>0</td><td>1 - 2</td><td>≥ 3</td></tr>
-              <tr><td>Net Points</td><td>≥ +10</td><td>0 to +9</td><td>&lt; 0</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+  fmt: v => v == null ? 'N/A' : v + '%',
 
-      <!-- Module H: Reports -->
-      <section id="page-reports" class="page-section">
-        <div class="card mb-1 no-print">
-          <h3>Report Generator</h3>
-          <div class="form-inline">
-            <button id="btn-print-report" class="btn primary">Print / Save as PDF</button>
-            <button id="btn-export-csv" class="btn secondary">Export CSV (Students)</button>
-          </div>
-        </div>
+  stats(sid) {
+    const d = Store.data;
+    const att = d.attendance.filter(a => a.sid === sid);
+    const tk = d.tasks.filter(t => t.sid === sid);
+    return {
+      att: this.pct(att),
+      days: att.length,
+      tasks: tk.length,
+      done: tk.filter(t => t.status === 'Completed').length,
+      over: tk.filter(this.overdue).length,
+      ...this.points(d.activities.filter(a => a.sid === sid))
+    };
+  }
+};
 
-        <div class="card" id="printable-report">
-          <h2>Institute Performance & Analytics Summary Report</h2>
-          <p>Generated Date: <span id="report-date"></span></p>
-          <hr style="margin: 1rem 0;">
-          <div id="report-content"></div>
-        </div>
-      </section>
+/* =====================================================
+   4. HELPERS
+   ===================================================== */
+const $ = s => document.querySelector(s);
+const D = () => Store.data;
+const find = (arr, id) => arr.find(x => x.id === id);
+const nameOf = id => (find(D().students, id) || {}).name || 'Unknown';
+const validDate = s => /^\d{4}-\d{2}-\d{2}$/.test(s) && !isNaN(new Date(s));
+const inRange = (d, a, b) => (!a || d >= a) && (!b || d <= b);
 
-      <!-- Module I: Storage Controls -->
-      <section id="page-data" class="page-section">
-        <div class="card">
-          <h3>Storage Controls</h3>
-          <button id="btn-load-sample" class="btn secondary">Load Sample Data</button>
-          <button id="btn-clear-data" class="btn danger">Clear All Data</button>
-        </div>
-        <div class="card mt-1">
-          <h3>Data & Local Storage Notice</h3>
-          <p>Local Storage is specific to one browser on one device. It does not offer cloud synchronisation or multi-user security. It may be cleared by browser settings or the user. Do not store confidential real student data.</p>
-        </div>
-      </section>
-    </main>
-  </div>
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => (
+  { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+));
 
-  <!-- Student Form Modal -->
-  <div id="student-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-modal">&times;</span>
-      <h2 id="modal-title">Add Student</h2>
-      <form id="form-student">
-        <input type="hidden" id="student-internal-id">
-        <div class="form-group">
-          <label for="stu-code">Student ID (Required, Unique)</label>
-          <input type="text" id="stu-code" required>
-          <small class="error-msg" id="err-stu-code"></small>
-        </div>
-        <div class="form-group">
-          <label for="stu-name">Full Name</label>
-          <input type="text" id="stu-name" required>
-        </div>
-        <div class="form-group">
-          <label for="stu-phone">Phone Number</label>
-          <input type="text" id="stu-phone" required>
-        </div>
-        <div class="form-group">
-          <label for="stu-email">Email</label>
-          <input type="email" id="stu-email">
-        </div>
-        <div class="form-group">
-          <label for="stu-course">Course</label>
-          <select id="stu-course" required></select>
-        </div>
-        <div class="form-group">
-          <label for="stu-batch">Batch</label>
-          <input type="text" id="stu-batch" required>
-        </div>
-        <div class="form-group">
-          <label for="stu-join">Joining Date</label>
-          <input type="date" id="stu-join" required>
-        </div>
-        <div class="form-group">
-          <label for="stu-status">Status</label>
-          <select id="stu-status">
-            <option value="Active">Active</option>
-            <option value="Inactive">Inactive</option>
-            <option value="Completed">Completed</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="stu-photo">Profile Photo (&lt; 2MB)</label>
-          <input type="file" id="stu-photo" accept="image/jpeg,image/png,image/webp">
-          <div id="photo-preview-container" class="mt-1"></div>
-        </div>
-        <button type="submit" class="btn primary">Save Student</button>
-      </form>
+const bar = (l, v, m, s = '') => `
+  <div class="bl">
+    <div class="bh"><span>${esc(l)}</span><span>${v}${s}</span></div>
+    <div class="bt"><i style="width:${m ? Math.max(0, Math.round(v / m * 100)) : 0}%"></i></div>
+  </div>`;
+
+const av = s => s.photo && s.photo.startsWith('data:image/')
+  ? `<img class="av" src="${esc(s.photo)}" alt="">`
+  : `<span class="av">${esc(s.name.slice(0, 2).toUpperCase())}</span>`;
+
+const studentOpts = () => D().students
+  .map(s => `<option value="${s.id}">${esc(s.name)} (${esc(s.studentId)})</option>`)
+  .join('');
+
+let view = 'dashboard';
+const ui = { q: '', course: '', batch: '', status: '', sort: 'name', dir: 1, attDate: Calc.today() };
+
+function resizeImg(file) { // compress profile photo to max 200px JPEG
+  return new Promise((ok, no) => {
+    const u = URL.createObjectURL(file), im = new Image();
+    im.onload = () => {
+      const r = Math.min(1, 200 / Math.max(im.width, im.height));
+      const c = document.createElement('canvas');
+      c.width = im.width * r;
+      c.height = im.height * r;
+      c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(u);
+      ok(c.toDataURL('image/jpeg', 0.7));
+    };
+    im.onerror = () => no(new Error('Invalid image file'));
+    im.src = u;
+  });
+}
+
+function csvDown(name, rows) {
+  const t = rows.map(r => r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([t], { type: 'text/csv' }));
+  a.download = name;
+  a.click();
+}
+
+/* generic form dialog with inline validation */
+function openForm(title, fields, vals, validate, onOk) {
+  const dlg = $('#dlg');
+
+  const input = f => {
+    if (f.t === 'select') {
+      return `<select name="${f.n}">${f.o.map(o => `<option value="${esc(o.v ?? o)}">${esc(o.l ?? o)}</option>`).join('')}</select>`;
+    }
+    if (f.t === 'textarea') return `<textarea name="${f.n}" rows="3"></textarea>`;
+    return `<input name="${f.n}" type="${f.t || 'text'}"${f.t === 'file' ? ' accept="image/*"' : ''}>`;
+  };
+
+  dlg.innerHTML = `<form novalidate><h3>${esc(title)}</h3>
+    ${fields.map(f => `<label>${esc(f.l)}${f.req ? ' *' : ''}
+      ${input(f)}
+      <small class="err" data-e="${f.n}"></small></label>`).join('')}
+    <div class="row"><button>Save</button><button type="button" class="sec" id="cx">Cancel</button></div></form>`;
+
+  const fm = dlg.querySelector('form');
+  fields.forEach(f => { if (f.t !== 'file') fm.elements[f.n].value = vals[f.n] ?? ''; });
+  $('#cx').onclick = () => dlg.close();
+
+  fm.onsubmit = async e => {
+    e.preventDefault();
+    const v = {};
+    fields.forEach(f => v[f.n] = f.t === 'file' ? (fm.elements[f.n].files[0] || null) : fm.elements[f.n].value.trim());
+
+    const errs = validate(v);
+    dlg.querySelectorAll('.err').forEach(x => x.textContent = errs[x.dataset.e] || '');
+    const first = Object.keys(errs)[0];
+    if (first) return fm.elements[first].focus();
+
+    try { await onOk(v); }
+    catch (x) { return alert('Error: ' + x.message); }
+
+    Store.save();
+    dlg.close();
+    render();
+  };
+  dlg.showModal();
+}
+
+/* =====================================================
+   5. VIEW: DASHBOARD
+   ===================================================== */
+function rDash() {
+  const d = D(), t = Calc.today();
+  const act = d.students.filter(s => s.status === 'Active');
+  const tr = d.attendance.filter(a => a.date === t);
+  const c = s => tr.filter(a => a.status === s).length;
+  const tc = s => d.tasks.filter(x => x.status === s).length;
+  const od = d.tasks.filter(Calc.overdue).length;
+  const done = d.tasks.length ? Math.round(tc('Completed') / d.tasks.length * 100) : null;
+  const pts = Calc.points(d.activities);
+  const rank = d.students
+    .map(s => ({ s, n: Calc.points(d.activities.filter(a => a.sid === s.id)).net }))
+    .sort((a, b) => b.n - a.n);
+  const mc = Math.max(1, ...CFG.COURSES.map(k => d.students.filter(s => s.course === k).length));
+  const notMarked = act.filter(s => !tr.some(a => a.sid === s.id)).length;
+
+  $('#main').innerHTML = `<h2 class="t">Dashboard</h2>
+    ${d.students.length ? '' : '<div class="card empty">No data yet. Add a student in <b>Students</b> or load sample data in <b>Data Management</b>.</div>'}
+
+    <div class="cards">
+      <div class="card"><h3>Total Students</h3><div class="big">${d.students.length}</div></div>
+      <div class="card"><h3>Active Students</h3><div class="big">${act.length}</div></div>
+      <div class="card"><h3>Today Attendance</h3><div class="big">${Calc.fmt(Calc.pct(tr))}</div></div>
+      <div class="card"><h3>Task Completion</h3><div class="big">${Calc.fmt(done)}</div></div>
+      <div class="card"><h3>Net Points</h3><div class="big">${pts.net}</div></div>
     </div>
-  </div>
 
-  <!-- FULL JAVASCRIPT LOGIC -->
-  <script>
-    const CONFIG = {
-      KEYS: {
-        STUDENTS: 'mgi_sms_students',
-        ATTENDANCE: 'mgi_sms_attendance',
-        TASKS: 'mgi_sms_tasks',
-        ACTIVITIES: 'mgi_sms_activities',
-        META: 'mgi_sms_meta'
-      },
-      COURSES: ['Web Development', 'Data Science', 'UI/UX Design', 'Cybersecurity'],
-      POSITIVE_CATEGORIES: ['Class Participation', 'Project Excellence', 'Helping Peers', 'Punctuality', 'Leadership'],
-      NEGATIVE_CATEGORIES: ['Late Arrival', 'Incomplete Work', 'Misconduct', 'Unexcused Absence', 'Distraction']
-    };
+    <div class="grid3">
+      <div class="card"><h3>Today's Attendance Breakdown</h3>
+        ${CFG.ATT.map(s => bar(s, c(s), tr.length || 1)).join('')}${bar('Not Marked', notMarked, act.length)}</div>
+      <div class="card"><h3>Course Distribution</h3>
+        ${CFG.COURSES.map(k => bar(k, d.students.filter(s => s.course === k).length, mc)).join('')}</div>
+      <div class="card"><h3>Task Status Distribution</h3>
+        ${CFG.TASK.map(s => bar(s, tc(s), d.tasks.length)).join('')}${bar('Overdue', od, d.tasks.length)}</div>
+    </div><br>
 
-    const StorageModule = {
-      getCollection(key) {
-        try {
-          const data = localStorage.getItem(key);
-          if (!data) return [];
-          const parsed = JSON.parse(data);
-          return Array.isArray(parsed) ? parsed : [];
-        } catch (e) {
-          console.error(`Error parsing ${key}:`, e);
-          return [];
-        }
-      },
+    <div class="grid3">
+      <div class="card"><h3>Overall Attendance</h3>
+        ${bar('Present %', Calc.pct(d.attendance) || 0, 100, '%')}<p>Total points: +${pts.pos} / -${pts.neg}</p></div>
+      <div class="card"><h3>Top 5 by Net Points</h3>
+        ${rank.slice(0, 5).map(r => bar(r.s.name, r.n, Math.max(1, rank[0].n))).join('') || '<p class="empty">N/A</p>'}</div>
+      <div class="card"><h3>Bottom 5 by Net Points</h3>
+        ${rank.slice(-5).reverse().map(r => bar(r.s.name, r.n, Math.max(1, Math.abs(rank[0].n)))).join('') || '<p class="empty">N/A</p>'}</div>
+    </div>`;
+}
 
-      saveCollection(key, data) {
-        try {
-          localStorage.setItem(key, JSON.stringify(data));
-          return true;
-        } catch (e) {
-          alert("Storage Quota Exceeded!");
-          return false;
-        }
-      },
-       
-      getStudents() { return this.getCollection(CONFIG.KEYS.STUDENTS); },
-      saveStudents(students) { return this.saveCollection(CONFIG.KEYS.STUDENTS, students); },
-      
-      getAttendance() { return this.getCollection(CONFIG.KEYS.ATTENDANCE); },
-      saveAttendance(attendance) { return this.saveCollection(CONFIG.KEYS.ATTENDANCE, attendance); },
+/* =====================================================
+   6. VIEW: STUDENTS
+   ===================================================== */
+const stuFields = () => [
+  { n: 'studentId', l: 'Student ID', req: 1 },
+  { n: 'name', l: 'Full Name', req: 1 },
+  { n: 'phone', l: 'Phone', req: 1 },
+  { n: 'email', l: 'Email', t: 'email' },
+  { n: 'address', l: 'Address' },
+  { n: 'course', l: 'Course', t: 'select', o: CFG.COURSES, req: 1 },
+  { n: 'batch', l: 'Batch', req: 1 },
+  { n: 'joined', l: 'Joining Date', t: 'date', req: 1 },
+  { n: 'status', l: 'Status', t: 'select', o: CFG.STATUS },
+  { n: 'progress', l: 'Course Progress (0-100)', t: 'number' },
+  { n: 'photo', l: 'Profile Photo', t: 'file' }
+];
 
-      getTasks() { return this.getCollection(CONFIG.KEYS.TASKS); },
-      saveTasks(tasks) { return this.saveCollection(CONFIG.KEYS.TASKS, tasks); },
+function validateStudent(v, editId) {
+  const e = {};
+  if (!v.studentId) e.studentId = 'Required';
+  else if (D().students.some(s => s.id !== editId && s.studentId.toLowerCase() === v.studentId.toLowerCase())) e.studentId = 'Student ID already exists';
 
-      getActivities() { return this.getCollection(CONFIG.KEYS.ACTIVITIES); },
-      saveActivities(activities) { return this.saveCollection(CONFIG.KEYS.ACTIVITIES, activities); },
+  if (!/^[A-Za-z .'-]{2,60}$/.test(v.name)) e.name = '2-60 characters: letters, spaces, apostrophe, hyphen, full stop';
+  if (!/^\+?\d{10,15}$/.test(v.phone)) e.phone = '10-15 digits, optional leading +';
+  if (v.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) e.email = 'Invalid email';
+  if (v.batch.length < 2 || v.batch.length > 30) e.batch = '2-30 characters';
+  if (!validDate(v.joined)) e.joined = 'Valid date required';
 
-      clearAll() {
-        Object.values(CONFIG.KEYS).forEach(key => localStorage.removeItem(key));
-      },
+  const p = v.progress === '' ? 0 : Number(v.progress);
+  if (!Number.isInteger(p) || p < 0 || p > 100) e.progress = 'Whole number 0-100';
+  if (v.photo && (!v.photo.type.startsWith('image/') || v.photo.size > 3e6)) e.photo = 'Image file under 3 MB required';
+  return e;
+}
 
-      loadSampleData() {
-        const today = new Date().toISOString().split('T')[0];
-        const sampleStudents = [
-          { id: "s1", studentCode: "MGI-001", fullName: "Rahul Verma", phone: "9876543210", email: "rahul@example.com", course: "Web Development", batch: "2026-A", joiningDate: "2026-01-10", status: "Active", courseProgress: 85, photo: null, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() },
-          { id: "s2", studentCode: "MGI-002", fullName: "Ananya Roy", phone: "9876543211", email: "ananya@example.com", course: "Data Science", batch: "2026-B", joiningDate: "2026-02-01", status: "Active", courseProgress: 60, photo: null, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() }
-        ];
-        const sampleAttendance = [
-          { id: "a1", studentId: "s1", date: today, status: "Present", remarks: "" },
-          { id: "a2", studentId: "s2", date: today, status: "Absent", remarks: "Sick" }
-        ];
-        const sampleTasks = [
-          { id: "t1", studentId: "s1", title: "Build Portfolio", description: "HTML/CSS site", assignedDate: today, dueDate: "2026-12-31", status: "Pending", completedDate: null },
-          { id: "t2", studentId: "s2", title: "Python Basics", description: "Variables", assignedDate: "2026-01-01", dueDate: "2026-01-05", status: "Pending", completedDate: null }
-        ];
-        const sampleActivities = [
-          { id: "act1", studentId: "s1", date: today, type: "Positive", category: "Class Participation", description: "Good answers", points: 15 }
-        ];
+function studentForm(s) {
+  const base = s || { status: 'Active', course: CFG.COURSES[0], joined: Calc.today(), progress: 0 };
+  openForm(s ? 'Edit Student' : 'Add Student', stuFields(), base, v => validateStudent(v, s && s.id), async v => {
+    v.photo = v.photo ? await resizeImg(v.photo) : (s && s.photo) || '';
+    v.progress = v.progress === '' ? 0 : Number(v.progress);
+    const now = new Date().toISOString();
+    if (s) Object.assign(s, v, { updated: now });
+    else D().students.push({ id: Store.uid(), ...v, created: now, updated: now });
+  });
+}
 
-        this.saveStudents(sampleStudents);
-        this.saveAttendance(sampleAttendance);
-        this.saveTasks(sampleTasks);
-        this.saveActivities(sampleActivities);
+function filteredStudents() {
+  const q = ui.q.trim().toLowerCase();
+  return D().students
+    .filter(s =>
+      (!q || s.name.toLowerCase().includes(q) || s.studentId.toLowerCase().includes(q)) &&
+      (!ui.course || s.course === ui.course) &&
+      (!ui.batch || s.batch === ui.batch) &&
+      (!ui.status || s.status === ui.status))
+    .sort((a, b) => {
+      const k = ui.sort === 'id' ? 'studentId' : ui.sort === 'date' ? 'joined' : 'name';
+      return a[k].localeCompare(b[k]) * ui.dir;
+    });
+}
+
+function rStuTable() {
+  const list = filteredStudents();
+  $('#count').textContent = `${list.length} student(s) found`;
+  $('#stbody').innerHTML = list.length
+    ? list.map(s => `<tr>
+        <td>${av(s)}</td><td>${esc(s.studentId)}</td><td>${esc(s.name)}</td>
+        <td>${esc(s.course)}</td><td>${esc(s.batch)}</td><td>${esc(s.status)}</td>
+        <td><button data-a="profile" data-id="${s.id}">View</button>
+            <button data-a="editS" data-id="${s.id}">Edit</button>
+            <button class="del" data-a="delS" data-id="${s.id}">Delete</button></td></tr>`).join('')
+    : '<tr><td colspan="7" class="empty">No students match. Add a student or clear filters.</td></tr>';
+}
+
+function rStu() {
+  const opts = (arr, cur, all) => `<option value="">${all}</option>` +
+    arr.map(x => `<option ${x === cur ? 'selected' : ''}>${esc(x)}</option>`).join('');
+  const batches = [...new Set(D().students.map(s => s.batch))];
+
+  $('#main').innerHTML = `<h2 class="t">Students</h2>
+    <div class="tools">
+      <input id="q" placeholder="Search name or ID" value="${esc(ui.q)}">
+      <select id="fc">${opts(CFG.COURSES, ui.course, 'All courses')}</select>
+      <select id="fb">${opts(batches, ui.batch, 'All batches')}</select>
+      <select id="fs">${opts(CFG.STATUS, ui.status, 'All statuses')}</select>
+      <button class="sec" data-a="clear">Clear filters</button>
+      <button data-a="addS">+ Add Student</button>
+    </div>
+    <p id="count"></p>
+    <div class="tbl"><table>
+      <thead><tr><th>Photo</th><th data-sort="id">ID ↕</th><th data-sort="name">Name ↕</th>
+        <th>Course</th><th>Batch</th><th>Status</th><th data-sort="date">Actions (sort by date ↕)</th></tr></thead>
+      <tbody id="stbody"></tbody>
+    </table></div>`;
+  rStuTable();
+}
+
+function profile(s) {
+  const d = D(), st = Calc.stats(s.id);
+  const att = d.attendance.filter(a => a.sid === s.id).sort((a, b) => b.date.localeCompare(a.date)).slice(0, 5);
+
+  $('#dlg').innerHTML = `<h3>${av(s)} ${esc(s.name)} (${esc(s.studentId)})</h3>
+    <p>${esc(s.course)} · ${esc(s.batch)} · ${esc(s.status)}<br>
+    Phone: ${esc(s.phone)} · ${esc(s.email || '-')}<br>
+    Address: ${esc(s.address || '-')}<br>
+    Joined: ${esc(s.joined)}<br>
+    Created: ${esc(s.created.slice(0, 10))} · Updated: ${esc(s.updated.slice(0, 10))}</p>
+    ${bar('Course Progress', s.progress, 100, '%')}
+    <p>Attendance: ${Calc.fmt(st.att)} (${st.days} days)<br>
+    Tasks: ${st.done}/${st.tasks} completed, ${st.over} overdue<br>
+    Points: +${st.pos} / -${st.neg} = ${st.net}</p>
+    <p><b>Recent attendance:</b> ${att.map(a => `${esc(a.date)} ${esc(a.status)}`).join(', ') || 'None'}</p>
+    <div class="row"><button id="cx">Close</button></div>`;
+  $('#cx').onclick = () => $('#dlg').close();
+  $('#dlg').showModal();
+}
+
+/* =====================================================
+   7. VIEW: ATTENDANCE
+   ===================================================== */
+function rAtt() {
+  const d = D();
+  const recs = d.attendance.filter(a => a.date === ui.attDate);
+  const list = d.students.filter(s => s.status === 'Active');
+
+  const row = s => {
+    const r = recs.find(x => x.sid === s.id) || {};
+    const radios = CFG.ATT.map(a =>
+      `<label style="display:inline-block;margin-right:8px"><input type="radio" style="width:auto" name="r${s.id}" value="${a}" ${r.status === a ? 'checked' : ''}> ${a}</label>`
+    ).join('');
+    return `<tr data-sid="${s.id}"><td>${esc(s.name)}</td><td>${radios}</td>
+      <td><input maxlength="200" value="${esc(r.remark || '')}"></td></tr>`;
+  };
+
+  $('#main').innerHTML = `<h2 class="t">Attendance</h2>
+    <div class="tools">
+      <input type="date" id="ad" max="${Calc.today()}" value="${ui.attDate}">
+      <button data-a="allP">Mark all Present</button>
+      <button data-a="saveAtt">Save Attendance</button>
+    </div>
+    <div class="tbl"><table>
+      <thead><tr><th>Student</th><th>Status</th><th>Remark</th></tr></thead>
+      <tbody>${list.length ? list.map(row).join('') : '<tr><td colspan="3" class="empty">No active students.</td></tr>'}</tbody>
+    </table></div>`;
+}
+
+function saveAtt() {
+  let n = 0;
+  document.querySelectorAll('tbody tr[data-sid]').forEach(tr => {
+    const c = tr.querySelector('input[type=radio]:checked');
+    if (!c) return;
+    const sid = tr.dataset.sid;
+    const remark = tr.querySelector('input[maxlength]').value.trim();
+    const ex = D().attendance.find(a => a.sid === sid && a.date === ui.attDate);
+    if (ex) Object.assign(ex, { status: c.value, remark });
+    else Store.addAttendance({ sid, date: ui.attDate, status: c.value, remark });
+    n++;
+  });
+  if (Store.save()) { alert(`${n} record(s) saved.`); render(); }
+}
+
+/* =====================================================
+   8. VIEW: TASKS
+   ===================================================== */
+function setTask(t, v) {
+  Object.assign(t, v);
+  if (t.status === 'Completed') t.completed = t.completed || Calc.today();
+  else delete t.completed;
+}
+
+function taskForm(t) {
+  if (!D().students.length) return alert('Add a student first.');
+  const f = [
+    { n: 'sid', l: 'Student', t: 'select', o: D().students.map(s => ({ v: s.id, l: `${s.name} (${s.studentId})` })) },
+    { n: 'title', l: 'Title', req: 1 },
+    { n: 'desc', l: 'Description', t: 'textarea' },
+    { n: 'assigned', l: 'Assigned date', t: 'date' },
+    { n: 'due', l: 'Due date', t: 'date', req: 1 },
+    { n: 'status', l: 'Status', t: 'select', o: CFG.TASK }
+  ];
+
+  const validate = v => {
+    const e = {};
+    if (v.title.length < 3 || v.title.length > 100) e.title = '3-100 characters';
+    if (v.desc.length > 500) e.desc = 'Max 500 characters';
+    if (!validDate(v.assigned)) e.assigned = 'Valid date required';
+    if (!validDate(v.due)) e.due = 'Valid date required';
+    else if (v.due < v.assigned) e.due = 'Due date cannot be before assigned date';
+    return e;
+  };
+
+  const save = v => {
+    if (t) setTask(t, v);
+    else { const n = { id: Store.uid() }; setTask(n, v); D().tasks.push(n); }
+  };
+
+  openForm(t ? 'Edit Task' : 'Add Task', f, t || { assigned: Calc.today(), status: 'Pending' }, validate, save);
+}
+
+function rTask() {
+  const rows = D().tasks.map(t => `<tr>
+    <td>${esc(nameOf(t.sid))}</td><td>${esc(t.title)}</td><td>${esc(t.due)}</td>
+    <td><select data-a="tstat" data-id="${t.id}">${CFG.TASK.map(s => `<option ${s === t.status ? 'selected' : ''}>${s}</option>`).join('')}</select>
+      ${Calc.overdue(t) ? '<span class="tag">Overdue</span>' : ''}</td>
+    <td><button data-a="editT" data-id="${t.id}">Edit</button>
+        <button class="del" data-a="delT" data-id="${t.id}">Delete</button></td></tr>`).join('');
+
+  $('#main').innerHTML = `<h2 class="t">Tasks</h2>
+    <div class="tools"><button data-a="addT">+ Add Task</button></div>
+    <div class="tbl"><table>
+      <thead><tr><th>Student</th><th>Task</th><th>Due</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="5" class="empty">No tasks yet.</td></tr>'}</tbody>
+    </table></div>`;
+}
+
+/* =====================================================
+   9. VIEW: ACTIVITIES
+   ===================================================== */
+function actForm() {
+  if (!D().students.length) return alert('Add a student first.');
+  const f = [
+    { n: 'sid', l: 'Student', t: 'select', o: D().students.map(s => ({ v: s.id, l: `${s.name} (${s.studentId})` })) },
+    { n: 'title', l: 'Activity / behaviour', req: 1 },
+    { n: 'type', l: 'Type', t: 'select', o: CFG.ACT },
+    { n: 'points', l: 'Points (1-100)', t: 'number', req: 1 },
+    { n: 'date', l: 'Date', t: 'date' }
+  ];
+
+  const validate = v => {
+    const e = {}, p = Number(v.points);
+    if (v.title.length < 3) e.title = 'At least 3 characters';
+    if (!Number.isInteger(p) || p < 1 || p > 100) e.points = 'Whole number 1-100';
+    if (!validDate(v.date)) e.date = 'Valid date required';
+    return e;
+  };
+
+  openForm('Add Activity', f, { date: Calc.today(), type: 'Positive' }, validate,
+    v => D().activities.push({ id: Store.uid(), ...v, points: Number(v.points) }));
+}
+
+function rAct() {
+  const rows = D().activities.map(a => `<tr>
+    <td>${esc(nameOf(a.sid))}</td><td>${esc(a.title)}</td><td>${esc(a.type)}</td>
+    <td>${a.type === 'Positive' ? '+' : '-'}${a.points}</td><td>${esc(a.date)}</td>
+    <td><button class="del" data-a="delA" data-id="${a.id}">Delete</button></td></tr>`).join('');
+
+  $('#main').innerHTML = `<h2 class="t">Activities</h2>
+    <div class="tools"><button data-a="addA">+ Add Activity</button></div>
+    <div class="tbl"><table>
+      <thead><tr><th>Student</th><th>Activity</th><th>Type</th><th>Points</th><th>Date</th><th></th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="6" class="empty">No activities yet.</td></tr>'}</tbody>
+    </table></div>`;
+}
+
+/* =====================================================
+   10. VIEW: ANALYSIS & RULES
+   ===================================================== */
+function rAna() {
+  $('#main').innerHTML = `<h2 class="t">Analysis & Rules</h2>
+    <div class="card"><h3>Compare two students</h3>
+      <div class="tools"><select id="ca">${studentOpts()}</select> vs <select id="cb">${studentOpts()}</select>
+      <button data-a="cmp">Compare</button></div>
+      <div id="aout"></div></div>
+    <div class="card"><h3>Business Rules (assumed formulas)</h3>
+      <ul class="rules">
+        <li>Attendance % = Present days ÷ total recorded days × 100 (Leave counts in the total). No records = N/A.</li>
+        <li>Net points = total positive points − total negative points.</li>
+        <li>Task completion = Completed tasks ÷ all tasks × 100.</li>
+        <li>A task is Overdue when its due date is before today and it is not Completed. Overdue is calculated on display, never stored.</li>
+        <li>One attendance record per student per date. Future dates are not allowed.</li>
+        <li>Deleting a student also deletes that student's attendance, tasks and activities.</li>
+      </ul></div>`;
+}
+
+function compare() {
+  const a = find(D().students, $('#ca').value);
+  const b = find(D().students, $('#cb').value);
+  if (!a || !b) return $('#aout').innerHTML = '<p class="empty">Add at least one student.</p>';
+
+  const x = Calc.stats(a.id), y = Calc.stats(b.id);
+  const row = (l, p, q) => `<tr><td>${l}</td><td>${p}</td><td>${q}</td></tr>`;
+
+  $('#aout').innerHTML = `<div class="tbl"><table>
+    <thead><tr><th>Metric</th><th>${esc(a.name)}</th><th>${esc(b.name)}</th></tr></thead>
+    <tbody>
+      ${row('Attendance', Calc.fmt(x.att), Calc.fmt(y.att))}
+      ${row('Tasks completed', `${x.done}/${x.tasks}`, `${y.done}/${y.tasks}`)}
+      ${row('Overdue tasks', x.over, y.over)}
+      ${row('Net points', x.net, y.net)}
+      ${row('Course progress', a.progress + '%', b.progress + '%')}
+    </tbody></table></div>`;
+}
+
+/* =====================================================
+   11. VIEW: REPORTS & EXPORT
+   ===================================================== */
+function rRep() {
+  const t = Calc.today();
+  $('#main').innerHTML = `<h2 class="t">Reports & Export</h2>
+    <div class="card"><h3>Student-wise attendance</h3>
+      <div class="tools"><select id="rs">${studentOpts()}</select>
+      From <input type="date" id="r1"> To <input type="date" id="r2">
+      <button data-a="repS">Run</button></div></div>
+    <div class="card"><h3>Date-wise attendance</h3>
+      <div class="tools">From <input type="date" id="d1" value="${t}"> To <input type="date" id="d2" value="${t}">
+      <button data-a="repD">Run</button></div></div>
+    <div class="card"><h3>Export</h3>
+      <div class="tools"><button data-a="csvS">Students CSV</button>
+      <button data-a="csvA">Attendance CSV</button>
+      <button class="sec" data-a="print">Print / Save as PDF</button></div></div>
+    <div id="rout"></div>`;
+}
+
+function repStudent() {
+  const s = find(D().students, $('#rs').value);
+  if (!s) return;
+  const recs = D().attendance
+    .filter(a => a.sid === s.id && inRange(a.date, $('#r1').value, $('#r2').value))
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const c = k => recs.filter(r => r.status === k).length;
+
+  $('#rout').innerHTML = `<div class="card">
+    <h3>${esc(s.name)}: Present ${c('Present')}, Absent ${c('Absent')}, Leave ${c('Leave')}, Total ${recs.length}, Attendance ${Calc.fmt(Calc.pct(recs))}</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Date</th><th>Status</th><th>Remark</th></tr></thead>
+      <tbody>${recs.map(r => `<tr><td>${esc(r.date)}</td><td>${esc(r.status)}</td><td>${esc(r.remark)}</td></tr>`).join('')
+        || '<tr><td colspan="3" class="empty">No records in this range.</td></tr>'}</tbody>
+    </table></div></div>`;
+}
+
+function repDate() {
+  const a = $('#d1').value, b = $('#d2').value, d = D();
+  const act = d.students.filter(s => s.status === 'Active');
+  const dates = [...new Set(d.attendance.filter(r => inRange(r.date, a, b)).map(r => r.date))].sort();
+
+  const rows = dates.map(dt => {
+    const r = d.attendance.filter(x => x.date === dt);
+    const c = k => r.filter(x => x.status === k).length;
+    const missing = act.filter(s => !r.some(x => x.sid === s.id)).length;
+    return `<tr><td>${esc(dt)}</td><td>${c('Present')}</td><td>${c('Absent')}</td><td>${c('Leave')}</td><td>${missing}</td></tr>`;
+  }).join('');
+
+  let detail = '';
+  if (a && a === b) {
+    detail = `<h3>Status on ${esc(a)}</h3><ul>${d.students.map(s => {
+      const r = d.attendance.find(x => x.sid === s.id && x.date === a);
+      return `<li>${esc(s.name)}: ${r ? esc(r.status) : 'Not Marked'}</li>`;
+    }).join('')}</ul>`;
+  }
+
+  $('#rout').innerHTML = `<div class="card"><div class="tbl"><table>
+    <thead><tr><th>Date</th><th>Present</th><th>Absent</th><th>Leave</th><th>Not Marked</th></tr></thead>
+    <tbody>${rows || '<tr><td colspan="5" class="empty">No records in this range.</td></tr>'}</tbody>
+    </table></div>${detail}</div>`;
+}
+
+/* =====================================================
+   12. VIEW: DATA MANAGEMENT
+   ===================================================== */
+function rData() {
+  $('#main').innerHTML = `<h2 class="t">Data Management</h2>
+    <div class="card"><h3>Backup & restore</h3>
+      <div class="tools"><button data-a="expJ">Export JSON backup</button>
+      <label style="margin:0">Import JSON: <input type="file" id="imp" accept=".json"></label></div></div>
+    <div class="card"><h3>Sample data & reset</h3>
+      <div class="tools"><button class="sec" data-a="sample">Load sample data</button>
+      <button class="del" data-a="wipe">Delete ALL data</button></div></div>`;
+}
+
+function loadSample() {
+  const names = ['Aisha Khan', "Liam O'Brien", 'Maria Garcia', 'Chen Wei', 'Sara Ali'];
+  const t = Calc.today(), now = new Date().toISOString();
+  const past = n => {
+    const x = new Date();
+    x.setDate(x.getDate() - n);
+    return `${x.getFullYear()}-${String(x.getMonth() + 1).padStart(2, '0')}-${String(x.getDate()).padStart(2, '0')}`;
+  };
+
+  names.forEach((n, i) => {
+    const sid = 'MGI-S' + Date.now().toString().slice(-4) + i, id = Store.uid();
+
+    D().students.push({
+      id, studentId: sid, name: n, phone: '+9715000000' + i, email: '', address: '',
+      course: CFG.COURSES[i % 4], batch: 'B1', joined: past(60), status: 'Active',
+      progress: (20 * (i + 1)) % 100, photo: '', created: now, updated: now
+    });
+
+    [1, 2, 3].forEach(k => Store.addAttendance({
+      sid: id, date: past(k), status: (i + k) % 3 === 2 ? 'Absent' : 'Present', remark: ''
+    }));
+
+    D().tasks.push({
+      id: Store.uid(), sid: id, title: 'Task ' + (i + 1), desc: '',
+      assigned: past(10), due: past(i - 2), status: CFG.TASK[i % 3]
+    });
+
+    D().activities.push({
+      id: Store.uid(), sid: id, title: 'Class participation',
+      type: i % 2 ? 'Negative' : 'Positive', points: 5 + i, date: t
+    });
+  });
+}
+
+/* =====================================================
+   13. EVENTS (delegation)
+   ===================================================== */
+document.addEventListener('click', e => {
+  const nav = e.target.closest('#nav button');
+  if (nav) { view = nav.dataset.v; return render(); }
+
+  const th = e.target.closest('th[data-sort]');
+  if (th) {
+    ui.dir = ui.sort === th.dataset.sort ? -ui.dir : 1;
+    ui.sort = th.dataset.sort;
+    return rStuTable();
+  }
+
+  const b = e.target.closest('button[data-a]');
+  if (!b) return;
+
+  const id = b.dataset.id, d = D();
+  const after = () => { Store.save(); render(); };
+
+  const acts = {
+    /* students */
+    addS: () => studentForm(),
+    editS: () => studentForm(find(d.students, id)),
+    profile: () => profile(find(d.students, id)),
+    delS: () => {
+      const s = find(d.students, id), r = Store.related(id);
+      if (confirm(`Delete ${s.name} (${s.studentId})?\nThis also deletes ${r.att} attendance, ${r.tasks} task and ${r.acts} activity record(s).`)) {
+        Store.removeStudent(id);
+        after();
       }
-    };
+    },
+    clear: () => { Object.assign(ui, { q: '', course: '', batch: '', status: '' }); render(); },
 
-    const AnalyticsEngine = {
-      getTodayString() {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0');
-        const day = String(now.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-      },
+    /* attendance */
+    allP: () => document.querySelectorAll('tbody input[type=radio][value=Present]').forEach(r => r.checked = true),
+    saveAtt,
 
-      calculateStudentAttendance(studentId, attendanceRecords) {
-        const records = attendanceRecords.filter(a => a.studentId === studentId);
-        if (records.length === 0) return { total: 0, present: 0, absent: 0, leave: 0, pct: "N/A" };
-        
-        let present = 0, absent = 0, leave = 0;
-        records.forEach(r => {
-          if (r.status === 'Present') present++;
-          if (r.status === 'Absent') absent++;
-          if (r.status === 'Leave') leave++;
-        });
-        const total = present + absent + leave;
-        const pct = total > 0 ? ((present / total) * 100).toFixed(1) : "N/A";
-        return { total, present, absent, leave, pct: pct !== "N/A" ? parseFloat(pct) : "N/A" };
-      },
+    /* tasks */
+    addT: () => taskForm(),
+    editT: () => taskForm(find(d.tasks, id)),
+    delT: () => { if (confirm('Delete this task?')) { d.tasks = d.tasks.filter(x => x.id !== id); after(); } },
 
-      calculateStudentTasks(studentId, taskRecords) {
-        const tasks = taskRecords.filter(t => t.studentId === studentId);
-        if (tasks.length === 0) return { total: 0, completed: 0, pending: 0, inProgress: 0, overdue: 0, pct: "N/A" };
-        
-        const today = this.getTodayString();
-        let completed = 0, pending = 0, inProgress = 0, overdue = 0;
+    /* activities */
+    addA: actForm,
+    delA: () => { if (confirm('Delete this activity?')) { d.activities = d.activities.filter(x => x.id !== id); after(); } },
 
-        tasks.forEach(t => {
-          if (t.status === 'Completed') {
-            completed++;
-          } else {
-            if (t.status === 'Pending') pending++;
-            if (t.status === 'In Progress') inProgress++;
-            if (t.dueDate < today) overdue++;
-          }
-        });
+    /* analysis & reports */
+    cmp: compare,
+    repS: repStudent,
+    repD: repDate,
+    print: () => window.print(),
 
-        const pct = ((completed / tasks.length) * 100).toFixed(1);
-        return { total: tasks.length, completed, pending, inProgress, overdue, pct: parseFloat(pct) };
-      },
+    /* exports */
+    csvS: () => csvDown('students.csv', [
+      ['Student ID', 'Name', 'Phone', 'Email', 'Course', 'Batch', 'Status', 'Joined', 'Progress'],
+      ...d.students.map(s => [s.studentId, s.name, s.phone, s.email, s.course, s.batch, s.status, s.joined, s.progress])
+    ]),
+    csvA: () => csvDown('attendance.csv', [
+      ['Student ID', 'Name', 'Date', 'Status', 'Remark'],
+      ...d.attendance.map(a => { const s = find(d.students, a.sid) || {}; return [s.studentId, s.name, a.date, a.status, a.remark]; })
+    ]),
+    expJ: () => {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' }));
+      a.download = 'mgi-backup.json';
+      a.click();
+    },
 
-      calculateStudentPoints(studentId, activityRecords) {
-        const activities = activityRecords.filter(a => a.studentId === studentId);
-        let pos = 0, neg = 0;
-        activities.forEach(a => {
-          if (a.type === 'Positive') pos += Number(a.points);
-          if (a.type === 'Negative') neg += Number(a.points);
-        });
-        return { positive: pos, negative: neg, net: pos - neg };
-      },
-
-      getPerformanceRating(attPct, taskPct, overdueCount, netPoints) {
-        const ratings = {};
-        
-        if (attPct === "N/A") ratings.att = { color: 'none', label: 'N/A' };
-        else if (attPct >= 90) ratings.att = { color: 'green', label: 'Green (≥90%)' };
-        else if (attPct >= 75) ratings.att = { color: 'amber', label: 'Amber (75-89.9%)' };
-        else ratings.att = { color: 'red', label: 'Red (<75%)' };
-
-        if (taskPct === "N/A") ratings.task = { color: 'none', label: 'N/A' };
-        else if (taskPct >= 80) ratings.task = { color: 'green', label: 'Green (≥80%)' };
-        else if (taskPct >= 50) ratings.task = { color: 'amber', label: 'Amber (50-79.9%)' };
-        else ratings.task = { color: 'red', label: 'Red (<50%)' };
-
-        if (taskPct === "N/A") ratings.overdue = { color: 'none', label: 'N/A' };
-        else if (overdueCount === 0) ratings.overdue = { color: 'green', label: 'Green (0)' };
-        else if (overdueCount <= 2) ratings.overdue = { color: 'amber', label: 'Amber (1-2)' };
-        else ratings.overdue = { color: 'red', label: 'Red (≥3)' };
-
-        if (netPoints >= 10) ratings.points = { color: 'green', label: 'Green (≥+10)' };
-        else if (netPoints >= 0) ratings.points = { color: 'amber', label: 'Amber (0 to +9)' };
-        else ratings.points = { color: 'red', label: 'Red (<0)' };
-
-        const available = Object.values(ratings).filter(r => r.color !== 'none');
-        let overall = "Not Rated";
-        if (available.length >= 2) {
-          if (available.some(r => r.color === 'red')) overall = "At Risk";
-          else if (available.every(r => r.color === 'green')) overall = "Excellent";
-          else if (available.every(r => r.color === 'amber')) overall = "Needs Improvement";
-          else overall = "Good";
-        }
-
-        return { ratings, overall };
+    /* data management */
+    sample: () => { loadSample(); after(); },
+    wipe: () => {
+      if (confirm('Permanently delete ALL data?')) {
+        Store.data = { students: [], attendance: [], tasks: [], activities: [] };
+        after();
       }
-    };
-
-    const StudentModule = {
-      processImage(file, callback) {
-        if (file.size > 2 * 1024 * 1024) {
-          alert("Image size exceeds maximum limit of 2MB.");
-          return;
-        }
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const img = new Image();
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = 256;
-            canvas.height = 256;
-            ctx.fillStyle = "#ffffff";
-            ctx.fillRect(0, 0, 256, 256);
-            ctx.drawImage(img, 0, 0, 256, 256);
-            const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
-            callback(dataUrl);
-          };
-          img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      },
-
-      deleteStudentCascade(studentId) {
-        let students = StorageModule.getStudents();
-        let attendance = StorageModule.getAttendance();
-        let tasks = StorageModule.getTasks();
-        let activities = StorageModule.getActivities();
-
-        const student = students.find(s => s.id === studentId);
-        if (!student) return;
-
-        const relatedAtt = attendance.filter(a => a.studentId === studentId).length;
-        const relatedTasks = tasks.filter(t => t.studentId === studentId).length;
-        const relatedAct = activities.filter(a => a.studentId === studentId).length;
-
-        const confirmMsg = `Delete ${student.fullName} (${student.studentCode})?\n\nThis will also delete:\n- ${relatedAtt} Attendance records\n- ${relatedTasks} Tasks\n- ${relatedAct} Activities\n\nThis action cannot be undone.`;
-
-        if (confirm(confirmMsg)) {
-          students = students.filter(s => s.id !== studentId);
-          attendance = attendance.filter(a => a.studentId !== studentId);
-          tasks = tasks.filter(t => t.studentId !== studentId);
-          activities = activities.filter(a => a.studentId !== studentId);
-
-          StorageModule.saveStudents(students);
-          StorageModule.saveAttendance(attendance);
-          StorageModule.saveTasks(tasks);
-          StorageModule.saveActivities(activities);
-          
-          App.refreshAll();
-        }
-      }
-    };
-
-    const App = {
-      currentImageData: null,
-
-      init() {
-        this.bindNavigation();
-        this.populateDropdowns();
-        this.bindStudentForm();
-        this.bindAttendanceSheet();
-        this.bindTaskForm();
-        this.bindActivityForm();
-        this.bindFiltersAndSearch();
-        this.bindReports();
-        this.bindDataControls();
-        this.refreshAll();
-      },
-
-      showAlert(msg, type = "success") {
-        const container = document.getElementById('alert-container');
-        container.innerHTML = `<div class="alert ${type}">${msg}</div>`;
-        setTimeout(() => container.innerHTML = '', 3000);
-      },
-
-      bindNavigation() {
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
-            
-            btn.classList.add('active');
-            const pageId = btn.dataset.page;
-            document.getElementById(`page-${pageId}`).classList.add('active');
-            document.getElementById('page-title').textContent = btn.textContent;
-          });
-        });
-
-        document.getElementById('toggle-sidebar').addEventListener('click', () => {
-          document.getElementById('sidebar').classList.toggle('show');
-        });
-      },
-
-      populateDropdowns() {
-        const courseSelects = [document.getElementById('stu-course'), document.getElementById('filter-course')];
-        courseSelects.forEach(sel => {
-          sel.innerHTML = '<option value="">All Courses</option>';
-          CONFIG.COURSES.forEach(c => {
-            const opt = document.createElement('option');
-            opt.value = c; opt.textContent = c;
-            sel.appendChild(opt);
-          });
-        });
-
-        const actCat = document.getElementById('act-category');
-        const updateCategories = () => {
-          actCat.innerHTML = '';
-          const type = document.getElementById('act-type').value;
-          const cats = type === 'Positive' ? CONFIG.POSITIVE_CATEGORIES : CONFIG.NEGATIVE_CATEGORIES;
-          cats.forEach(c => {
-            const opt = document.createElement('option');
-            opt.value = c; opt.textContent = c;
-            actCat.appendChild(opt);
-          });
-        };
-        document.getElementById('act-type').addEventListener('change', updateCategories);
-        updateCategories();
-      },
-
-      refreshAll() {
-        this.renderDashboard();
-        this.renderStudentsTable();
-        this.updateStudentDropdowns();
-        this.renderAttendanceSheet();
-        this.renderTasksTable();
-        this.renderActivitiesTable();
-        this.renderAnalysisPage();
-        this.renderReportPage();
-      },
-
-      renderDashboard() {
-        const students = StorageModule.getStudents();
-        const attendance = StorageModule.getAttendance();
-        const tasks = StorageModule.getTasks();
-        const activities = StorageModule.getActivities();
-        const today = AnalyticsEngine.getTodayString();
-
-        document.getElementById('kpi-total-students').textContent = students.length;
-        document.getElementById('kpi-active-students').textContent = students.filter(s => s.status === 'Active').length;
-
-        const todayAtt = attendance.filter(a => a.date === today);
-        const presentCount = todayAtt.filter(a => a.status === 'Present').length;
-        const attRate = todayAtt.length > 0 ? ((presentCount / todayAtt.length) * 100).toFixed(1) + '%' : 'N/A';
-        document.getElementById('kpi-today-att').textContent = attRate;
-
-        const completedTasks = tasks.filter(t => t.status === 'Completed').length;
-        const taskRate = tasks.length > 0 ? ((completedTasks / tasks.length) * 100).toFixed(1) + '%' : 'N/A';
-        document.getElementById('kpi-task-rate').textContent = taskRate;
-
-        let netPoints = 0;
-        activities.forEach(a => {
-          netPoints += (a.type === 'Positive' ? Number(a.points) : -Number(a.points));
-        });
-        document.getElementById('kpi-net-points').textContent = netPoints;
-
-        this.renderCSSBars('attendance-breakdown', [
-          { label: 'Present', val: presentCount },
-          { label: 'Absent', val: todayAtt.filter(a => a.status === 'Absent').length },
-          { label: 'Leave', val: todayAtt.filter(a => a.status === 'Leave').length }
-        ]);
-
-        const courseCounts = CONFIG.COURSES.map(c => ({
-          label: c, val: students.filter(s => s.course === c).length
-        }));
-        this.renderCSSBars('course-distribution', courseCounts);
-
-        this.renderCSSBars('task-distribution', [
-          { label: 'Completed', val: completedTasks },
-          { label: 'Pending', val: tasks.filter(t => t.status === 'Pending').length },
-          { label: 'In Progress', val: tasks.filter(t => t.status === 'In Progress').length }
-        ]);
-      },
-
-      renderCSSBars(containerId, items) {
-        const container = document.getElementById(containerId);
-        const max = Math.max(...items.map(i => i.val), 1);
-        container.innerHTML = items.map(i => `
-          <div style="margin-bottom: 0.5rem;">
-            <div style="display:flex; justify-content:space-between; font-size: 0.8rem;">
-              <span>${i.label}</span><span>${i.val}</span>
-            </div>
-            <div class="bar-container">
-              <div class="bar-fill" style="width: ${(i.val / max) * 100}%;"></div>
-            </div>
-          </div>
-        `).join('');
-      },
-
-      renderStudentsTable() {
-        const students = StorageModule.getStudents();
-        const search = document.getElementById('student-search').value.toLowerCase();
-        const course = document.getElementById('filter-course').value;
-        const status = document.getElementById('filter-status').value;
-
-        const filtered = students.filter(s => {
-          const matchSearch = s.fullName.toLowerCase().includes(search) || s.studentCode.toLowerCase().includes(search);
-          const matchCourse = !course || s.course === course;
-          const matchStatus = !status || s.status === status;
-          return matchSearch && matchCourse && matchStatus;
-        });
-
-        const tbody = document.getElementById('students-table-body');
-        tbody.innerHTML = filtered.map(s => `
-          <tr>
-            <td>${s.photo ? `<img src="${s.photo}" class="avatar">` : `<div class="avatar-placeholder">${s.fullName.charAt(0)}</div>`}</td>
-            <td>${s.studentCode}</td>
-            <td>${s.fullName}</td>
-            <td>${s.course}</td>
-            <td>${s.batch}</td>
-            <td><span class="badge ${s.status === 'Active' ? 'green' : 'amber'}">${s.status}</span></td>
-            <td>
-              <button class="btn secondary btn-sm" onclick="App.editStudent('${s.id}')">Edit</button>
-              <button class="btn danger btn-sm" onclick="StudentModule.deleteStudentCascade('${s.id}')">Delete</button>
-            </td>
-          </tr>
-        `).join('');
-      },
-
-      bindStudentForm() {
-        const modal = document.getElementById('student-modal');
-        document.getElementById('btn-open-student-modal').onclick = () => {
-          document.getElementById('form-student').reset();
-          document.getElementById('student-internal-id').value = '';
-          document.getElementById('photo-preview-container').innerHTML = '';
-          this.currentImageData = null;
-          document.getElementById('modal-title').textContent = "Add Student";
-          modal.style.display = 'flex';
-        };
-
-        document.querySelector('.close-modal').onclick = () => modal.style.display = 'none';
-
-        document.getElementById('stu-photo').addEventListener('change', (e) => {
-          if (e.target.files[0]) {
-            StudentModule.processImage(e.target.files[0], (dataUrl) => {
-              this.currentImageData = dataUrl;
-              document.getElementById('photo-preview-container').innerHTML = `<img src="${dataUrl}" class="avatar">`;
-            });
-          }
-        });
-
-        document.getElementById('form-student').onsubmit = (e) => {
-          e.preventDefault();
-          const internalId = document.getElementById('student-internal-id').value;
-          const code = document.getElementById('stu-code').value.trim();
-          let students = StorageModule.getStudents();
-
-          const isDup = students.some(s => s.studentCode.toLowerCase() === code.toLowerCase() && s.id !== internalId);
-          if (isDup) {
-            document.getElementById('err-stu-code').textContent = "Student ID already exists!";
-            return;
-          }
-
-          const studentObj = {
-            id: internalId || crypto.randomUUID(),
-            studentCode: code,
-            fullName: document.getElementById('stu-name').value.trim(),
-            phone: document.getElementById('stu-phone').value.trim(),
-            email: document.getElementById('stu-email').value.trim(),
-            course: document.getElementById('stu-course').value,
-            batch: document.getElementById('stu-batch').value.trim(),
-            joiningDate: document.getElementById('stu-join').value,
-            status: document.getElementById('stu-status').value,
-            courseProgress: 0,
-            photo: this.currentImageData || (internalId ? (students.find(s => s.id === internalId)?.photo || null) : null),
-            createdAt: internalId ? (students.find(s => s.id === internalId)?.createdAt || new Date().toISOString()) : new Date().toISOString(),
-            updatedAt: new Date().toISOString()
-          };
-
-          if (internalId) {
-            students = students.map(s => s.id === internalId ? studentObj : s);
-          } else {
-            students.push(studentObj);
-          }
-
-          StorageModule.saveStudents(students);
-          modal.style.display = 'none';
-          this.showAlert("Student saved successfully!");
-          this.refreshAll();
-        };
-      },
-
-      editStudent(id) {
-        const s = StorageModule.getStudents().find(st => st.id === id);
-        if (!s) return;
-        document.getElementById('student-internal-id').value = s.id;
-        document.getElementById('stu-code').value = s.studentCode;
-        document.getElementById('stu-name').value = s.fullName;
-        document.getElementById('stu-phone').value = s.phone;
-        document.getElementById('stu-email').value = s.email;
-        document.getElementById('stu-course').value = s.course;
-        document.getElementById('stu-batch').value = s.batch;
-        document.getElementById('stu-join').value = s.joiningDate;
-        document.getElementById('stu-status').value = s.status;
-        this.currentImageData = s.photo;
-        if (s.photo) {
-          document.getElementById('photo-preview-container').innerHTML = `<img src="${s.photo}" class="avatar">`;
-        }
-        document.getElementById('modal-title').textContent = "Edit Student";
-        document.getElementById('student-modal').style.display = 'flex';
-      },
-
-      updateStudentDropdowns() {
-        const activeStudents = StorageModule.getStudents().filter(s => s.status === 'Active');
-        const selects = [document.getElementById('task-student'), document.getElementById('act-student'), document.getElementById('analysis-student-select')];
-        selects.forEach(sel => {
-          sel.innerHTML = activeStudents.map(s => `<option value="${s.id}">${s.fullName} (${s.studentCode})</option>`).join('');
-        });
-      },
-
-      bindAttendanceSheet() {
-        const dateInput = document.getElementById('att-date');
-        dateInput.value = AnalyticsEngine.getTodayString();
-        dateInput.addEventListener('change', () => this.renderAttendanceSheet());
-
-        document.getElementById('btn-mark-all-present').onclick = () => {
-          document.querySelectorAll('.att-status-select').forEach(s => s.value = 'Present');
-        };
-
-        document.getElementById('btn-save-attendance').onclick = () => {
-          const selectedDate = dateInput.value;
-          let attendance = StorageModule.getAttendance();
-          attendance = attendance.filter(a => a.date !== selectedDate);
-
-          document.querySelectorAll('#attendance-sheet-body tr').forEach(tr => {
-            const studentId = tr.dataset.id;
-            const status = tr.querySelector('.att-status-select').value;
-            const remarks = tr.querySelector('.att-remark-input').value.trim();
-
-            attendance.push({
-              id: crypto.randomUUID(),
-              studentId,
-              date: selectedDate,
-              status,
-              remarks
-            });
-          });
-
-          StorageModule.saveAttendance(attendance);
-          this.showAlert("Attendance recorded successfully!");
-          this.refreshAll();
-        };
-      },
-
-      renderAttendanceSheet() {
-        const selectedDate = document.getElementById('att-date').value;
-        const activeStudents = StorageModule.getStudents().filter(s => s.status === 'Active');
-        const attendance = StorageModule.getAttendance().filter(a => a.date === selectedDate);
-
-        const tbody = document.getElementById('attendance-sheet-body');
-        tbody.innerHTML = activeStudents.map(s => {
-          const existing = attendance.find(a => a.studentId === s.id);
-          const currentStatus = existing ? existing.status : 'Present';
-          const currentRemark = existing ? existing.remarks : '';
-
-          return `
-            <tr data-id="${s.id}">
-              <td>${s.studentCode}</td>
-              <td>${s.fullName}</td>
-              <td>
-                <select class="att-status-select">
-                  <option value="Present" ${currentStatus === 'Present' ? 'selected' : ''}>Present</option>
-                  <option value="Absent" ${currentStatus === 'Absent' ? 'selected' : ''}>Absent</option>
-                  <option value="Leave" ${currentStatus === 'Leave' ? 'selected' : ''}>Leave</option>
-                </select>
-              </td>
-              <td><input type="text" class="att-remark-input" value="${currentRemark}" placeholder="Remark..."></td>
-            </tr>
-          `;
-        }).join('');
-      },
-
-      bindTaskForm() {
-        document.getElementById('task-due').value = AnalyticsEngine.getTodayString();
-        document.getElementById('form-task').onsubmit = (e) => {
-          e.preventDefault();
-          const tasks = StorageModule.getTasks();
-          tasks.push({
-            id: crypto.randomUUID(),
-            studentId: document.getElementById('task-student').value,
-            title: document.getElementById('task-title').value.trim(),
-            description: document.getElementById('task-desc').value.trim(),
-            assignedDate: AnalyticsEngine.getTodayString(),
-            dueDate: document.getElementById('task-due').value,
-            status: 'Pending',
-            completedDate: null
-          });
-          StorageModule.saveTasks(tasks);
-          this.showAlert("Task assigned!");
-          document.getElementById('form-task').reset();
-          this.refreshAll();
-        };
-      },
-
-      renderTasksTable() {
-        const tasks = StorageModule.getTasks();
-        const students = StorageModule.getStudents();
-        const today = AnalyticsEngine.getTodayString();
-
-        const tbody = document.getElementById('tasks-table-body');
-        tbody.innerHTML = tasks.map(t => {
-          const student = students.find(s => s.id === t.studentId);
-          const isOverdue = t.status !== 'Completed' && t.dueDate < today;
-
-          return `
-            <tr>
-              <td>${student ? student.fullName : 'Unknown'}</td>
-              <td>${t.title} ${isOverdue ? '<span class="badge red">Overdue</span>' : ''}</td>
-              <td>${t.dueDate}</td>
-              <td>
-                <select onchange="App.updateTaskStatus('${t.id}', this.value)">
-                  <option value="Pending" ${t.status === 'Pending' ? 'selected' : ''}>Pending</option>
-                  <option value="In Progress" ${t.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                  <option value="Completed" ${t.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                </select>
-              </td>
-              <td><button class="btn danger btn-sm" onclick="App.deleteTask('${t.id}')">Delete</button></td>
-            </tr>
-          `;
-        }).join('');
-      },
-
-      updateTaskStatus(taskId, status) {
-        let tasks = StorageModule.getTasks();
-        tasks = tasks.map(t => {
-          if (t.id === taskId) {
-            t.status = status;
-            t.completedDate = status === 'Completed' ? AnalyticsEngine.getTodayString() : null;
-          }
-          return t;
-        });
-        StorageModule.saveTasks(tasks);
-        this.refreshAll();
-      },
-
-      deleteTask(taskId) {
-        if (confirm("Delete this task?")) {
-          const tasks = StorageModule.getTasks().filter(t => t.id !== taskId);
-          StorageModule.saveTasks(tasks);
-          this.refreshAll();
-        }
-      },
-
-      bindActivityForm() {
-        document.getElementById('form-activity').onsubmit = (e) => {
-          e.preventDefault();
-          const activities = StorageModule.getActivities();
-          activities.push({
-            id: crypto.randomUUID(),
-            studentId: document.getElementById('act-student').value,
-            date: AnalyticsEngine.getTodayString(),
-            type: document.getElementById('act-type').value,
-            category: document.getElementById('act-category').value,
-            points: Number(document.getElementById('act-points').value),
-            description: document.getElementById('act-desc').value.trim()
-          });
-          StorageModule.saveActivities(activities);
-          this.showAlert("Activity logged!");
-          document.getElementById('form-activity').reset();
-          this.refreshAll();
-        };
-      },
-
-      renderActivitiesTable() {
-        const activities = StorageModule.getActivities();
-        const students = StorageModule.getStudents();
-
-        const tbody = document.getElementById('activities-table-body');
-        tbody.innerHTML = activities.map(a => {
-          const student = students.find(s => s.id === a.studentId);
-          const sign = a.type === 'Positive' ? '+' : '-';
-          const color = a.type === 'Positive' ? 'green' : 'red';
-
-          return `
-            <tr>
-              <td>${student ? student.fullName : 'Unknown'}</td>
-              <td><span class="badge ${color}">${a.type}</span></td>
-              <td>${a.category}</td>
-              <td><strong>${sign}${a.points}</strong></td>
-              <td>${a.description}</td>
-            </tr>
-          `;
-        }).join('');
-      },
-
-      renderAnalysisPage() {
-        const studentId = document.getElementById('analysis-student-select').value;
-        const container = document.getElementById('analysis-results');
-        if (!studentId) {
-          container.innerHTML = `<p>No active student selected.</p>`;
-          return;
-        }
-
-        const attendance = StorageModule.getAttendance();
-        const tasks = StorageModule.getTasks();
-        const activities = StorageModule.getActivities();
-
-        const attMetrics = AnalyticsEngine.calculateStudentAttendance(studentId, attendance);
-        const taskMetrics = AnalyticsEngine.calculateStudentTasks(studentId, tasks);
-        const pointMetrics = AnalyticsEngine.calculateStudentPoints(studentId, activities);
-
-        const evalResult = AnalyticsEngine.getPerformanceRating(
-          attMetrics.pct, taskMetrics.pct, taskMetrics.overdue, pointMetrics.net
-        );
-
-        container.innerHTML = `
-          <h4>Overall Performance Status: <span class="badge ${evalResult.overall === 'At Risk' ? 'red' : 'green'}">${evalResult.overall}</span></h4>
-          <div class="kpi-grid mt-1">
-            <div class="kpi-card">
-              <h4>Attendance</h4>
-              <p>${attMetrics.pct}${attMetrics.pct !== 'N/A' ? '%' : ''}</p>
-              <small>Rating: ${evalResult.ratings.att.label}</small>
-            </div>
-            <div class="kpi-card">
-              <h4>Task Rate</h4>
-              <p>${taskMetrics.pct}${taskMetrics.pct !== 'N/A' ? '%' : ''}</p>
-              <small>Rating: ${evalResult.ratings.task.label}</small>
-            </div>
-            <div class="kpi-card">
-              <h4>Overdue Tasks</h4>
-              <p>${taskMetrics.overdue}</p>
-              <small>Rating: ${evalResult.ratings.overdue.label}</small>
-            </div>
-            <div class="kpi-card">
-              <h4>Net Points</h4>
-              <p>${pointMetrics.net}</p>
-              <small>Rating: ${evalResult.ratings.points.label}</small>
-            </div>
-          </div>
-        `;
-
-        document.getElementById('analysis-student-select').onchange = () => this.renderAnalysisPage();
-      },
-
-      bindReports() {
-        document.getElementById('btn-print-report').onclick = () => window.print();
-        document.getElementById('btn-export-csv').onclick = () => {
-          const students = StorageModule.getStudents();
-          let csv = "ID,StudentCode,FullName,Course,Batch,Status\n";
-          students.forEach(s => {
-            csv += `"${s.id}","${s.studentCode}","${s.fullName}","${s.course}","${s.batch}","${s.status}"\n`;
-          });
-          const blob = new Blob([csv], { type: 'text/csv' });
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.setAttribute('href', url);
-          a.setAttribute('download', `students_export_${AnalyticsEngine.getTodayString()}.csv`);
-          a.click();
-        };
-      },
-
-      renderReportPage() {
-        document.getElementById('report-date').textContent = new Date().toLocaleString();
-        const students = StorageModule.getStudents();
-        const attendance = StorageModule.getAttendance();
-        const tasks = StorageModule.getTasks();
-        const activities = StorageModule.getActivities();
-
-        const reportContent = document.getElementById('report-content');
-        reportContent.innerHTML = `
-          <h3>Institute Metrics</h3>
-          <p>Total Registered Students: <strong>${students.length}</strong></p>
-          <p>Total Recorded Attendance Days: <strong>${attendance.length}</strong></p>
-          <p>Total Tasks Assigned: <strong>${tasks.length}</strong></p>
-          <p>Total Activities Logged: <strong>${activities.length}</strong></p>
-          
-          <h3 style="margin-top: 1.5rem;">Student Roster</h3>
-          <table class="data-table">
-            <thead>
-              <tr><th>ID</th><th>Name</th><th>Course</th><th>Batch</th><th>Status</th></tr>
-            </thead>
-            <tbody>
-              ${students.map(s => `<tr><td>${s.studentCode}</td><td>${s.fullName}</td><td>${s.course}</td><td>${s.batch}</td><td>${s.status}</td></tr>`).join('')}
-            </tbody>
-          </table>
-        `;
-      },
-
-      bindFiltersAndSearch() {
-        ['student-search', 'filter-course', 'filter-status'].forEach(id => {
-          document.getElementById(id).addEventListener('input', () => this.renderStudentsTable());
-        });
-        document.getElementById('btn-clear-filters').onclick = () => {
-          document.getElementById('student-search').value = '';
-          document.getElementById('filter-course').value = '';
-          document.getElementById('filter-status').value = '';
-          this.renderStudentsTable();
-        };
-      },
-
-      bindDataControls() {
-        document.getElementById('btn-load-sample').onclick = () => {
-          if (confirm("Load sample data? Existing records will remain.")) {
-            StorageModule.loadSampleData();
-            this.refreshAll();
-            this.showAlert("Sample data loaded successfully!");
-          }
-        };
-
-        document.getElementById('btn-clear-data').onclick = () => {
-          if (confirm("Are you sure you want to clear ALL data? This action cannot be undone!")) {
-            StorageModule.clearAll();
-            this.refreshAll();
-            this.showAlert("All data cleared!", "error");
-          }
-        };
-      }
-    };
-
-    document.addEventListener('DOMContentLoaded', () => App.init());
-  </script>
+    }
+  };
+
+  if (acts[b.dataset.a]) acts[b.dataset.a]();
+});
+
+document.addEventListener('input', e => {
+  if (e.target.id === 'q') { ui.q = e.target.value; rStuTable(); }
+});
+
+document.addEventListener('change', e => {
+  const t = e.target;
+
+  if (t.id === 'fc') ui.course = t.value;
+  else if (t.id === 'fb') ui.batch = t.value;
+  else if (t.id === 'fs') ui.status = t.value;
+  else if (t.id === 'ad') {
+    if (t.value && t.value <= Calc.today()) ui.attDate = t.value;
+    return render();
+  }
+  else if (t.dataset.a === 'tstat') {
+    setTask(find(D().tasks, t.dataset.id), { status: t.value });
+    Store.save();
+    return render();
+  }
+  else if (t.id === 'imp' && t.files[0]) {
+    t.files[0].text().then(txt => {
+      const j = JSON.parse(txt);
+      if (!['students', 'attendance', 'tasks', 'activities'].every(k => Array.isArray(j[k]))) throw new Error('Not a valid backup file');
+      if (confirm('Replace all current data with this backup?')) { Store.data = j; Store.save(); render(); }
+    }).catch(x => alert('Import failed: ' + x.message));
+    return;
+  }
+  else return;
+
+  rStuTable();
+});
+
+
+function render() {
+  $('#nav').innerHTML = CFG.VIEWS
+    .map(([k, l]) => `<button data-v="${k}" class="${k === view ? 'on' : ''}">${l}</button>`)
+    .join('');
+
+  ({
+    dashboard: rDash, students: rStu, attendance: rAtt, tasks: rTask,
+    activities: rAct, analysis: rAna, reports: rRep, data: rData
+  })[view]();
+}
+
+Store.load();
+render();
+</script>
 </body>
 </html>

@@ -1,1 +1,169 @@
-this  is my text file
+
+const employees = [
+    { name: "Arun", salary: 40000, score: 92, attendance: 96 },
+    { name: "Priya", salary: 50000, score: 78, attendance: 98 },
+    { name: "Kumar", salary: 35000, score: 88, attendance: 82 },
+    { name: "Divya", salary: 45000, score: 95, attendance: 99 },
+    { name: "Ravi", salary: 30000, score: 65, attendance: 95 }
+];
+
+// 1. Filter and Map
+const eligible = employees
+    .filter(e => e.score >= 85 && e.attendance >= 90)
+    .map(e => ({
+        name: e.name,
+        bonus: e.salary * (e.score >= 95 ? 0.15 : 0.10)
+    }));
+
+console.log("1. Employee Bonus:", eligible);
+
+
+// 2. Inventory
+const products = [
+    { name: "Mouse", stock: 4, min: 10, price: 500 },
+    { name: "Keyboard", stock: 15, min: 5, price: 900 },
+    { name: "Monitor", stock: 2, min: 4, price: 8000 }
+];
+
+const inventory = products.map(p => ({
+    ...p,
+    status: p.stock === 0 ? "OUT OF STOCK"
+        : p.stock < p.min ? "REORDER" : "AVAILABLE"
+}));
+
+console.log("2. Inventory:", inventory);
+
+
+// 3. Shopping Cart
+const cart = [
+    { name: "Laptop", price: 50000, qty: 1 },
+    { name: "Mouse", price: 800, qty: 2 }
+];
+
+const subtotal = cart.reduce(
+    (sum, item) => sum + item.price * item.qty, 0
+);
+
+const discount = subtotal >= 50000 ? subtotal * 0.10 : 0;
+const total = subtotal - discount;
+
+console.log("3. Shopping Cart:", { subtotal, discount, total });
+
+
+// 4. Attendance and Salary
+const staff = [
+    { name: "Arun", days: 26, leave: 2, dailyPay: 1000 },
+    { name: "Meena", days: 24, leave: 4, dailyPay: 1200 }
+];
+
+const payroll = staff.map(e => {
+    const payableDays = Math.max(0, e.days - e.leave);
+
+    return {
+        name: e.name,
+        payableDays,
+        salary: payableDays * e.dailyPay
+    };
+});
+
+console.log("4. Payroll:", payroll);
+
+
+// 5. Expense Tracker
+const expenses = [
+    { category: "Travel", amount: 5000 },
+    { category: "Food", amount: 2500 },
+    { category: "Travel", amount: 3000 }
+];
+
+const expenseTotals = expenses.reduce((result, item) => {
+    result[item.category] = (result[item.category] || 0) + item.amount;
+    return result;
+}, {});
+
+console.log("5. Expenses:", expenseTotals);
+
+
+// 6. Search and Filter
+const searchName = "ar";
+
+const searchResults = employees.filter(e =>
+    e.name.toLowerCase().includes(searchName)
+);
+
+console.log("6. Search Results:", searchResults);
+
+
+// 7. Duplicate Prevention
+const records = [
+    { name: "Arun", email: "arun@company.com" }
+];
+
+const newEmployee = {
+    name: "Priya",
+    email: "priya@company.com"
+};
+
+if (records.some(e => e.email === newEmployee.email)) {
+    console.log("7. Email already exists");
+} else {
+    records.push(newEmployee);
+    console.log("7. Employee registered:", records);
+}
+
+
+// 8. Task Priority and Sorting
+const tasks = [
+    { title: "Fix Login", priority: 1, due: "2026-10-24", done: false },
+    { title: "Update UI", priority: 3, due: "2026-10-30", done: false },
+    { title: "Write Docs", priority: 2, due: "2026-10-20", done: true }
+];
+
+const today = "2026-10-26";
+
+const pending = tasks
+    .filter(t => !t.done)
+    .map(t => ({ ...t, overdue: t.due < today }))
+    .sort((a, b) =>
+        Number(b.overdue) - Number(a.overdue) ||
+        a.priority - b.priority
+    );
+
+console.log("8. Pending Tasks:", pending);
+
+
+// 9. Sales Analytics
+const sales = [
+    { person: "Arun", amount: 20000 },
+    { person: "Priya", amount: 30000 },
+    { person: "Arun", amount: 15000 }
+];
+
+const salesTotals = sales.reduce((result, sale) => {
+    result[sale.person] = (result[sale.person] || 0) + sale.amount;
+    return result;
+}, {});
+
+console.log("9. Sales Report:", salesTotals);
+
+
+// 10. Task Board CRUD
+let taskList = [
+    { id: 1, title: "Build Login", done: false },
+    { id: 2, title: "Test Payment", done: false }
+];
+
+// CREATE
+taskList.push({ id: 3, title: "Fix Navbar", done: false });
+
+// READ
+console.log("10. Task List:", taskList);
+
+// UPDATE
+const task = taskList.find(t => t.id === 1);
+if (task) task.done = true;
+
+// DELETE
+taskList = taskList.filter(t => t.id !== 2);
+
+console.log("Final Task List:", taskList);
