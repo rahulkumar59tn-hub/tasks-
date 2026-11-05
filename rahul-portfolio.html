@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Rahul | Portfolio</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+
+/* GENERAL */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: #020b20;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+section {
+    padding: 80px 6%;
+}
+
+h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+h2 i {
+    color: #08aaff;
+    margin-right: 10px;
+}
+
+/* NAVBAR */
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background: #020b20;
+    border-bottom: 1px solid #17365c;
+}
+
+nav {
+    max-width: 1250px;
+    height: 75px;
+    margin: auto;
+    padding: 0 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.logo i {
+    color: #08aaff;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #08aaff;
+}
+
+.download-btn {
+    padding: 12px 20px;
+    border-radius: 30px;
+    background: #078bff;
+    color: white;
+    text-decoration: none;
+}
+
+.menu-btn {
+    display: none;
+    font-size: 25px;
+    cursor: pointer;
+}
+
+/* HOME */
+
+.home {
+    min-height: 650px;
+    padding-top: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    background: radial-gradient(circle at 80% 50%, #073e80, transparent 40%);
+}
+
+.home-content {
+    max-width: 600px;
+}
+
+.home-content h1 {
+    font-size: 55px;
+    margin-bottom: 15px;
+}
+
+.home-content h1 span {
+    color: #08aaff;
+}
+
+.home-content h3 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.home-content p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: #d0d9e9;
+}
+
+.buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 14px 25px;
+    border-radius: 30px;
+    background: #087dff;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #00bfff;
+    transform: translateY(-3px);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid white;
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.social-links a {
+    width: 43px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #142440;
+    color: white;
+    border-radius: 50%;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.social-links a:hover {
+    background: #078bff;
+}
+
+.home-image {
+    width: 330px;
+    height: 380px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #087dff, #00d4ff);
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.home-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ABOUT */
+
+.about {
+    background: #06132c;
+}
+
+.about-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.about-container p {
+    line-height: 1.8;
+    color: #d0d9e9;
+}
+
+.education {
+    border-left: 2px solid #08aaff;
+    padding-left: 30px;
+}
+
+.education h3 {
+    margin-bottom: 15px;
+    color: #08aaff;
+}
+
+/* SKILLS */
+
+.skills {
+    background: #020b20;
+}
+
+.skills-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.skill-card {
+    background: #0c1933;
+    border: 1px solid #344566;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.skill-card:hover {
+    transform: translateY(-8px);
+    border-color: #08aaff;
+}
+
+.skill-card i {
+    font-size: 45px;
+    margin-bottom: 15px;
+}
+
+.html { color: #ff6333; }
+.css { color: #168cff; }
+.js { color: #ffdc35; }
+.python { color: #ffd43b; }
+
+.progress {
+    height: 8px;
+    background: #263958;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.progress-bar {
+    height: 8px;
+    background: #08aaff;
+    border-radius: 10px;
+}
+
+/* PROJECTS */
+
+.projects {
+    background: #06132c;
+}
+
+.project-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.project-card {
+    background: #0b1833;
+    border: 1px solid #344566;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.project-card:hover {
+    transform: translateY(-8px);
+    border-color: #08aaff;
+}
+
+.project-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.project-info {
+    padding: 20px;
+}
+
+.project-info h3 {
+    margin-bottom: 15px;
+}
+
+.project-info p {
+    line-height: 1.6;
+    color: #c4d0e3;
+    min-height: 75px;
+}
+
+.project-info a {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 20px;
+    background: #078bff;
+    color: white;
+    border-radius: 25px;
+    text-decoration: none;
+}
+
+/* WORK TOGETHER */
+
+.work {
+    text-align: center;
+    background: linear-gradient(120deg, #06132c, #083e83);
+}
+
+.work p {
+    margin: 15px 0 25px;
+}
+
+/* CONTACT */
+
+.contact {
+    background: #020b20;
+}
+
+.contact-container {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 15px;
+    background: #101f3d;
+    border: 1px solid #293e60;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    outline: none;
+}
+
+.contact-form textarea {
+    height: 130px;
+    resize: none;
+}
+
+.contact-form button {
+    width: 100%;
+    padding: 15px;
+    background: #078bff;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.contact-form button:hover {
+    background: #00bfff;
+}
+
+.contact-details {
+    border-left: 2px solid #08aaff;
+    padding-left: 35px;
+}
+
+.contact-details p {
+    margin-bottom: 25px;
+    line-height: 1.7;
+}
+
+.contact-details i {
+    color: #08aaff;
+    margin-right: 12px;
+    font-size: 20px;
+}
+
+.thank-you {
+    font-size: 35px;
+    font-style: italic;
+    margin-top: 40px;
+}
+
+/* FOOTER */
+
+footer {
+    padding: 25px;
+    background: #06132c;
+    border-top: 1px solid #263958;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+footer span {
+    color: red;
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 850px) {
+
+    .menu-btn {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        position: absolute;
+        top: 75px;
+        left: 0;
+        width: 100%;
+        background: #06132c;
+        flex-direction: column;
+        text-align: center;
+        padding: 25px;
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .home {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .buttons,
+    .social-links {
+        justify-content: center;
+    }
+
+    .about-container,
+    .contact-container {
+        grid-template-columns: 1fr;
+    }
+
+    .skills-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .project-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .education,
+    .contact-details {
+        border-left: none;
+        border-top: 2px solid #08aaff;
+        padding: 25px 0 0;
+    }
+}
+
+@media(max-width: 550px) {
+
+    section {
+        padding: 80px 5%;
+    }
+
+    .home-content h1 {
+        font-size: 35px;
+    }
+
+    .home-content h3 {
+        font-size: 22px;
+    }
+
+    .home-image {
+        width: 260px;
+        height: 300px;
+    }
+
+    .skills-container,
+    .project-container {
+        grid-template-columns: 1fr;
+    }
+
+    .download-btn {
+        display: none;
+    }
+
+    footer {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<header>
+
+<nav>
+
+<div class="logo">
+<i class="fas fa-code"></i> Rahul
+</div>
+
+<ul class="nav-links" id="navLinks">
+
+<li><a href="#home" class="active">Home</a></li>
+<li><a href="#about">About</a></li>
+<li><a href="#skills">Skills</a></li>
+<li><a href="#projects">Projects</a></li>
+<li><a href="#contact">Contact</a></li>
+
+</ul>
+
+<a href="resume.pdf" download class="download-btn">
+<i class="fas fa-download"></i> Download CV
+</a>
+
+<i class="fas fa-bars menu-btn" id="menuBtn"></i>
+
+</nav>
+
+</header>
+
+<!-- HOME -->
+
+<section class="home" id="home">
+
+<div class="home-content">
+
+<h1>Hi, I'm <span>Rahul</span></h1>
+
+<h3>Junior Front-End Developer</h3>
+
+<p>
+I am a B.Sc. Computer Science graduate with
+knowledge in HTML, CSS and JavaScript.
+I enjoy building responsive websites and
+solving real-world problems.
+</p>
+
+<div class="buttons">
+
+<a href="#contact" class="btn">
+Hire Me
+</a>
+
+<a href="#projects" class="btn btn-outline">
+View Projects
+</a>
+
+</div>
+
+<div class="social-links">
+
+<a href="https://github.com/" target="_blank">
+<i class="fab fa-github"></i>
+</a>
+
+<a href="https://linkedin.com/" target="_blank">
+<i class="fab fa-linkedin"></i>
+</a>
+
+<a href="https://youtube.com/" target="_blank">
+<i class="fab fa-youtube"></i>
+</a>
+
+<a href="email to:rahulranjithemail@example.com">
+<i class="fas fa-envelope"></i>
+</a>
+
+</div>
+
+</div>
+
+<div class="home-image">
+
+<img src="./viper 0.2.png" alt="Rahul Profile Photo"
+onerror="this.style.display='none'">
+
+</div>
+
+</section>
+
+<!-- ABOUT -->
+
+<section class="about" id="about">
+
+<h2>
+<i class="fas fa-user"></i> About Me
+</h2>
+
+<div class="about-container">
+
+<div>
+
+<p>
+I completed my B.Sc. in Computer Science in 2025.
+I have learned HTML, CSS and JavaScript and I am
+passionate about web development.
+My goal is to build a successful career in IT
+and contribute to innovative projects.
+</p>
+
+</div>
+
+<div class="education">
+
+<h3>
+<i class="fas fa-graduation-cap"></i> Education
+</h3>
+
+<h4>B.Sc. Computer Science</h4>
+
+<p>
+Ultra Arts and Science College,<br>
+Madurai – 2025
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- SKILLS -->
+
+<section class="skills" id="skills">
+
+<h2>
+<i class="fas fa-gear"></i> My Skills
+</h2>
+
+<div class="skills-container">
+
+<div class="skill-card">
+
+<i class="fab fa-html5 html"></i>
+
+<h3>HTML5</h3>
+
+<p>90%</p>
+
+<div class="progress">
+<div class="progress-bar" style="width:90%"></div>
+</div>
+
+</div>
+
+<div class="skill-card">
+
+<i class="fab fa-css3-alt css"></i>
+
+<h3>CSS3</h3>
+
+<p>85%</p>
+
+<div class="progress">
+<div class="progress-bar" style="width:85%"></div>
+</div>
+
+</div>
+
+<div class="skill-card">
+
+<i class="fab fa-js js"></i>
+
+<h3>JavaScript</h3>
+
+<p>80%</p>
+
+<div class="progress">
+<div class="progress-bar" style="width:80%"></div>
+</div>
+
+</div>
+
+<div class="skill-card">
+
+<i class="fab fa-python python"></i>
+
+<h3>Python</h3>
+
+<p>70%</p>
+
+<div class="progress">
+<div class="progress-bar" style="width:70%"></div>
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- PROJECTS -->
+
+<section class="projects" id="projects">
+
+<h2>
+<i class="fas fa-folder"></i> My Projects
+</h2>
+
+<p>Here are some of my recent projects:</p>
+
+<div class="project-container">
+
+<div class="project-card">
+
+<img src="./08.jpeg"
+alt="student management project">
+
+<div class="project-info">
+
+<h3>student- management -projec</h3>
+
+<p>
+A complete Student Management & Performance Analytics 
+System using HTML, CSS and JavaScript.
+</p>
+
+<a href="#">
+View Project <i class="fas fa-arrow-right"></i>
+</a>
+
+</div>
+
+</div>
+
+<div class="project-card">
+
+<img src="./0.9.png"
+alt="HR Payroll Dashboard">
+
+<div class="project-info">
+
+<h3>HR Payroll Dashboard</h3>
+
+<p>
+A dashboard for employee salary
+and payroll management.
+</p>
+
+<a href="#">
+View Project <i class="fas fa-arrow-right"></i>
+</a>
+
+</div>
+
+</div>
+
+<div class="project-card">
+
+<img src="./10,0.png"
+alt="HR Payroll Dashboard">
+
+<div class="project-info">
+
+<h3>HR Payroll Dashboard</h3>
+
+<p>
+    HR Payroll Overview is a dashboard used by 
+    HR employees to manage employee salary details,
+     attendance, payroll processing and reports.
+
+</p>
+
+<a href="#">
+View Project <i class="fas fa-arrow-right"></i>
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- WORK TOGETHER -->
+
+<section class="work">
+
+<h2>
+<i class="fas fa-handshake"></i>
+Let's Work Together
+</h2>
+
+<p>
+I'm open to new opportunities and exciting projects.
+</p>
+
+<a href="#contact" class="btn">
+Contact Me <i class="fas fa-arrow-right"></i>
+</a>
+
+</section>
+
+<!-- CONTACT -->
+
+<section class="contact" id="contact">
+
+<h2>
+<i class="fas fa-envelope"></i> Contact Me
+</h2>
+
+<p>
+Feel free to reach out for opportunities or collaborations.
+</p>
+
+<div class="contact-container">
+
+<form class="contact-form" id="contactForm">
+
+<input
+type="text"
+id="name"
+placeholder="Your Name"
+required>
+
+<input
+type="email"
+id="email"
+placeholder="Your Email"
+required>
+
+<textarea
+id="message"
+placeholder="Your Message"
+required></textarea>
+
+<button type="submit">
+Send Message <i class="fas fa-arrow-right"></i>
+</button>
+
+</form>
+
+<div class="contact-details">
+
+<p>
+<i class="fas fa-location-dot"></i>
+Madurai, Tamil Nadu
+</p>
+
+<p>
+<i class="fas fa-envelope"></i>
+rahulranjithkumar6383@gmail.com
+</p>
+
+<p>
+<i class="fab fa-linkedin"></i>
+linkedin.com/in/rahul-
+</p>
+
+<p>
+<i class="fab fa-github"></i>
+github.com/rahul
+</p>
+
+<div class="thank-you">
+Thank You! ☺
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<footer>
+
+<p>© 2025 Rahul. All rights reserved.</p>
+
+<p>Made with <span>♥</span> using HTML, CSS & JavaScript</p>
+
+</footer>
+
+
+
+<script>
+
+
+
+const menuBtn = document.getElementById("menuBtn");
+
+const navLinks = document.getElementById("navLinks");
+
+menuBtn.addEventListener("click", function() {
+
+    navLinks.classList.toggle("show");
+
+});
+
+
+
+document.querySelectorAll(".nav-links a").forEach(function(link) {
+
+    link.addEventListener("click", function() {
+
+        navLinks.classList.remove("show");
+
+    });
+
+});
+
+
+const sections = document.querySelectorAll("section");
+
+const navItems = document.querySelectorAll(".nav-links a");
+
+window.addEventListener("scroll", function() {
+
+    let current = "";
+
+    sections.forEach(function(section) {
+
+        const sectionTop = section.offsetTop - 120;
+
+        if (window.scrollY >= sectionTop) {
+
+            current = section.getAttribute("id");
+
+        }
+
+    });
+
+    navItems.forEach(function(link) {
+
+        link.classList.remove("active");
+
+        if (link.getAttribute("href") === "#" + current) {
+
+            link.classList.add("active");
+
+        }
+
+    });
+
+});
+
+
+const contactForm = document.getElementById("contactForm");
+
+contactForm.addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    const name = document.getElementById("name").value;
+
+    const email = document.getElementById("email").value;
+
+    const message = document.getElementById("message").value;
+
+    if (name && email && message) {
+
+        alert("Thank you " + name + "! Your message is ready.");
+
+        contactForm.reset();
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
