@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+     body {
+      font-family: Arial;
+      max-width: 700px;
+      margin: 20px auto;
+      border: 3px solid #eb6517;
+      padding: 20px;
+    }
+     h1 {
+      background: #720505;
+      text-align: center;
+      padding: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th {
+      background: #409d7b;
+      color: white;
+      padding: 10px;
+    }
+
+    td {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      text-align: center;
+    }
+
+    button {
+      background: #000000;
+      color: white;
+      border: 0;
+      width: 24px;
+      height: 24px;
+    }
+
+    input {
+      width: 35px;
+      text-align: center;
+    }
+    .items
+    {
+    font-color:#0b56a1;
+    }
+    
+
+    
+</style>
+</style>
+<body>
+    <h1>Fruits Billing Statement</h1>
+
+      <p>
+    <b>Maduraifruitsshop</b><br>
+    123, madurai Market<br>
+    mattuthavani, Road 12345
+  </p>
+  <p>
+    <b>Bill To:</b> Mithran<br>
+    Chennai fruitsshop, velachery Bus stop
+  </p>
+
+   <table>
+    <tr>
+      <th>Description</th>
+      <th>Quantity</th>
+      <th>Unit Price</th>
+      <th>Total</th>
+    </tr>
+     <tbody id="rows"></tbody>
+  </table>
+   <h3 style="text-align:right">
+    Grand Total: <span id="grand">0.00</span>
+  </h3>
+
+   <script>
+    // List of fruits
+    var items = [
+      { name: "Apple",      qty: 1, price: 150  },
+      { name: "Orange",     qty: 2, price: 15.99 },
+      { name: "Mango",      qty: 1, price: 75 },
+      { name: "Watermelon", qty: 1, price: 49.95 },
+      { name: "Strawberry", qty: 5, price: 120 },
+      { name: "Banana",     qty: 5, price: 60  }
+    ];
+
+    function change(i, amount) {
+      items[i].qty = Math.max(0, items[i].qty + amount);
+      show();
+    }
+     function show() {
+      var html = "";
+      var grand = 0;
+
+for (var i = 0; i < items.length; i++) {
+        var total = items[i].qty * items[i].price;
+        grand += total;
+         
+
+         html += "<tr>";
+        html += "<td>" + items[i].name + "</td>";
+        html += "<td>";
+        html += "<button onclick='change(" + i + ",-1)'>-</button> ";
+        html += "<input value='" + items[i].qty + "' readonly> ";
+        html += "<button onclick='change(" + i + ",1)'>+</button>";
+        html += "</td>";
+        html += "<td>" + items[i].price.toFixed(2) + "</td>";
+        html += "<td>" + total.toFixed(2) + "</td>";
+        html += "</tr>";
+      }
+
+
+      document.getElementById("rows").innerHTML = html;
+      document.getElementById("grand").textContent = grand.toFixed(2);
+    }
+      show();
+  </script>
+
+
+
+
+
+</body>
+</html>
